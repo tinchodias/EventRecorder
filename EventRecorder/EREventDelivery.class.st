@@ -22,7 +22,8 @@ Class {
 		'permission',
 		'recorder',
 		'queue',
-		'preSuspendingAction'
+		'preSuspendingAction',
+		'deliverLapse'
 	],
 	#category : #'EventRecorder-Support'
 }
@@ -70,6 +71,11 @@ EREventDelivery >> deactivate [
 		oldProcess ]
 ]
 
+{ #category : #accessing }
+EREventDelivery >> defaultDeliveryLapse [
+	^ 20 minutes
+]
+
 { #category : #delivery }
 EREventDelivery >> deliver: aBoolean [
 	| bundles |
@@ -93,9 +99,19 @@ EREventDelivery >> deliver: aGTEventMultiBundle signalProgress: aBoolean [
 			response)
 ]
 
+{ #category : #accessing }
+EREventDelivery >> deliverLapse [
+	^ deliverLapse ifNil: [ deliverLapse := self defaultDeliveryLapse ]
+]
+
+{ #category : #accessing }
+EREventDelivery >> deliverLapse: aDuration [
+	deliverLapse := aDuration
+]
+
 { #category : #initialization }
 EREventDelivery >> deliveryCycle [
-	delay := self standardDuration asDelay.
+	delay := self deliverLapse asDelay.
 	self announceSuspendingDelivery.
 	delay wait.
 	delay := nil.
@@ -218,11 +234,6 @@ EREventDelivery >> recorder: anObject [
 { #category : #accessing }
 EREventDelivery >> size [
 	^ queue size
-]
-
-{ #category : #accessing }
-EREventDelivery >> standardDuration [
-	^ 20 minutes
 ]
 
 { #category : #deactivation }
