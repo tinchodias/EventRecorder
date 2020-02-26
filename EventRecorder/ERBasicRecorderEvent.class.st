@@ -41,7 +41,7 @@ ERBasicRecorderEvent >> hash [
 
 { #category : #accessing }
 ERBasicRecorderEvent >> hashForText: aString [
-	^ self settings obfuscateIfNecessary: aString
+	^ self obfuscateIfNecessary: aString
 ]
 
 { #category : #'accessing - announcement info' }
@@ -112,6 +112,13 @@ ERBasicRecorderEvent >> latestUpdate [
 ]
 
 { #category : #accessing }
+ERBasicRecorderEvent >> obfuscateIfNecessary: anObject [
+	^ ERPrivacy sendEntityNames
+		ifTrue: [ anObject ]
+		ifFalse: [ GlobalIdentifier uniqueInstance obfuscate: anObject ]
+]
+
+{ #category : #accessing }
 ERBasicRecorderEvent >> obfuscated [
 	^ self infoAt: #obfuscated ifAbsent: true
 ]
@@ -124,11 +131,6 @@ ERBasicRecorderEvent >> obfuscated: aBoolean [
 { #category : #'accessing - announcement info' }
 ERBasicRecorderEvent >> sessionCreationTime [
 	^ self infoAt: #sessionCreationTime ifAbsent: [ SmalltalkImage current session creationTime ]
-]
-
-{ #category : #accessing }
-ERBasicRecorderEvent >> settings [
-	^ GlobalIdentifier uniqueInstance
 ]
 
 { #category : #accessing }
