@@ -122,6 +122,11 @@ EREventCollector >> initialize [
 ]
 
 { #category : #testing }
+EREventCollector >> isEmpty [
+	^ self size = 0
+]
+
+{ #category : #testing }
 EREventCollector >> isLiberated [
 	"When I answer true, I can be removed from a GTEventRecorder object."
 	^ self registry isLiberated and: [ recordedEvents isEmpty ]

@@ -72,10 +72,10 @@ EREventRecorderTest >> setUpServer [
 
 { #category : #running }
 EREventRecorderTest >> tearDown [
-	super tearDown.
 	recorder deactivateDelivery.
 	server stop.
 	server unsubscribeAll.
+	super tearDown.
 ]
 
 { #category : #tests }
@@ -245,7 +245,7 @@ EREventRecorderTest >> testPack3 [
 	self assert: recorder delivery size equals: 0.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 EREventRecorderTest >> testPrivacyChanged [
 	"Ensure that delivery is turn off when privacy is disabled."
 	self assert: recorder canSendDiagnosticsAndUsageData.
@@ -259,7 +259,7 @@ EREventRecorderTest >> testPrivacyChanged [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 EREventRecorderTest >> testPrivacyChanged2 [
 	"Ensure that delivery is turn off when privacy is available, but there is no any collector."
 	self testPrivacyChanged.
@@ -272,7 +272,7 @@ EREventRecorderTest >> testPrivacyChanged2 [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 EREventRecorderTest >> testPrivacyChanged3 [
 	"Ensure that delivery is turn on when privacy is available and there is a collector."
 	self testPrivacyChanged.
@@ -288,7 +288,7 @@ EREventRecorderTest >> testPrivacyChanged3 [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 EREventRecorderTest >> testPrivacyChanged4 [
 	"Ensure that delivery is turn on when privacy is available and there is a collector."
 	self testPrivacyChanged.

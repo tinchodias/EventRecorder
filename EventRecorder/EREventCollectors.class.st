@@ -43,6 +43,11 @@ EREventCollectors >> initialize [
 	collectors := OrderedCollection new.
 ]
 
+{ #category : #testing }
+EREventCollectors >> isEmpty [
+	^ self size = 0
+]
+
 { #category : #accessing }
 EREventCollectors >> numberOfEvents [
 	^ mutex critical: [ 

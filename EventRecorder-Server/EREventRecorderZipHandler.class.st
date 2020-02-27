@@ -11,7 +11,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'fileDirectory',
-		'zipDirectory',
 		'zipRootUrl',
 		'archiver'
 	],

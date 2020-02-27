@@ -194,7 +194,7 @@ EREventRecorder >> pack [
 	collectors do: [ :eachCollector | allCollectors addLast: eachCollector ].
 	consolidatedCollectors := EREventConsolidate new collectors: allCollectors; consolidated.
 	consolidatedCollectors do: [ :eachCollector | | bundle |
-		eachCollector size > 0 ifTrue: [ 
+		eachCollector isEmpty ifFalse: [
 			bundle := packing pack: eachCollector.
 			delivery add: bundle] ].
 	self removeLiberatedCollectors.
@@ -212,7 +212,7 @@ EREventRecorder >> privacyChanged [
 EREventRecorder >> removeCollector: aGTEventCollector [ 
 	| removedCollector |
 	removedCollector := collectors remove: aGTEventCollector.
-	collectors size = 0 ifTrue: [ self deactivateDelivery ].
+	collectors isEmpty ifTrue: [ self deactivateDelivery ].
 	^ removedCollector
 ]
 

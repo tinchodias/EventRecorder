@@ -25,7 +25,7 @@ EREventRecorderDelegateTest >> assertLocation: location input: input [
 
 { #category : #private }
 EREventRecorderDelegateTest >> compress: aFileReference [
-	^ (aFileReference basename, '.zip')
+	^ aFileReference basename, '.zip'
 ]
 
 { #category : #running }
@@ -52,9 +52,9 @@ EREventRecorderDelegateTest >> setUp [
 
 { #category : #running }
 EREventRecorderDelegateTest >> tearDown [
-	super tearDown.
 	server stop.
 	server unsubscribeAll.
+	super tearDown.
 ]
 
 { #category : #tests }

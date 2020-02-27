@@ -16,20 +16,20 @@ EREventRegistryTest >> setUp [
 	registry := EREventRegistry new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 EREventRegistryTest >> testIsLiberated [
 	"By default it should answer yes."
 	self assert: registry isLiberated
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 EREventRegistryTest >> testIsLiberated2 [
 	"By default it should answer yes."
 	registry object: self.
 	self deny: registry isLiberated.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 EREventRegistryTest >> testIsLiberated3 [
 	"By default it should answer yes."
 	registry object: self.

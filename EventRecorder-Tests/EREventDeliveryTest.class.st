@@ -6,7 +6,6 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'delivery',
-		'announcer',
 		'semaphore'
 	],
 	#category : #'EventRecorder-Tests-Support'
@@ -31,8 +30,8 @@ EREventDeliveryTest >> setUp [
 
 { #category : #running }
 EREventDeliveryTest >> tearDown [
-	super tearDown.
 	delivery deactivate.
+	super tearDown.
 ]
 
 { #category : #tests }

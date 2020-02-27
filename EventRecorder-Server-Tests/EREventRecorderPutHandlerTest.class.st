@@ -10,7 +10,6 @@ Class {
 		'handler',
 		'delegate',
 		'server',
-		'url',
 		'data',
 		'client',
 		'location',
@@ -82,9 +81,9 @@ EREventRecorderPutHandlerTest >> storage [
 
 { #category : #running }
 EREventRecorderPutHandlerTest >> tearDown [
-	super tearDown.
 	server stop.
 	server unsubscribeAll.
+	super tearDown.
 ]
 
 { #category : #tests }

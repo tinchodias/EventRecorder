@@ -46,33 +46,35 @@ EREventCollectorsTest >> testDefault [
 { #category : #tests }
 EREventCollectorsTest >> testDo [
 	"Ensure that collectors are iterated in the same order as they are added."
+
 	| collector1 collector2 interatedCollectors |
 	collector1 := EREventCollector new.
 	collector2 := EREventCollector new.
 	collectors add: collector2.
 	collectors add: collector1.
 	interatedCollectors := OrderedCollection new.
-	collectors do: [ :eachCollector | interatedCollectors addLast: eachCollector ].
+	collectors
+		do: [ :eachCollector | interatedCollectors addLast: eachCollector ].
 	self assert: interatedCollectors size equals: 2.
 	self assert: interatedCollectors first == collector2.
-	self assert: interatedCollectors second == collector1.
-	
+	self assert: interatedCollectors second identicalTo: collector1
 ]
 
 { #category : #tests }
 EREventCollectorsTest >> testDo2 [
 	"Ensure that collectors are iterated in the same order as they are added."
+
 	| collector1 collector2 interatedCollectors |
 	collector1 := EREventCollector new.
 	collector2 := EREventCollector new.
 	collectors add: collector1.
 	collectors add: collector2.
 	interatedCollectors := OrderedCollection new.
-	collectors do: [ :eachCollector | interatedCollectors addLast: eachCollector ].
+	collectors
+		do: [ :eachCollector | interatedCollectors addLast: eachCollector ].
 	self assert: interatedCollectors size equals: 2.
-	self assert: interatedCollectors first == collector1.
-	self assert: interatedCollectors second == collector2.
-	
+	self assert: interatedCollectors first identicalTo: collector1.
+	self assert: interatedCollectors second == collector2
 ]
 
 { #category : #tests }
