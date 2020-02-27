@@ -29,8 +29,8 @@ Class {
 		'collectors',
 		'delivery',
 		'packing',
-		'privacy',
-		'announcer'
+		'announcer',
+		'settings'
 	],
 	#classInstVars : [
 		'uniqueInstance'
@@ -58,6 +58,22 @@ EREventRecorder class >> isGlobalRecorder: anEventRecorder [
 			ifNotNil: [ :anInstance | anInstance == anEventRecorder ]
 ]
 
+{ #category : #'instance creation' }
+EREventRecorder class >> new [
+	"Answer a new instance with the default settings."
+
+	^ self newWith: ERPharoUsageDataPrivacy
+]
+
+{ #category : #'instance creation' }
+EREventRecorder class >> newWith: aRecorderSettings [
+	"Answer a new instance with the specified settings."
+
+	^ self basicNew
+		initializeWith: aRecorderSettings;
+		yourself
+]
+
 { #category : #initialization }
 EREventRecorder class >> registerInterestToSystemAnnouncement [
 	<systemEventRegistration>
@@ -66,7 +82,7 @@ EREventRecorder class >> registerInterestToSystemAnnouncement [
 	SystemAnnouncer uniqueInstance
 		unsubscribe: uniqueInstance.
 	SystemAnnouncer uniqueInstance weak 
-			when: ERPrivacyChangedAnnouncement
+			when: ERPharoUsageDataPrivacyChangedAnnouncement
 			send: #privacyChanged 
 			to: uniqueInstance
 ]
@@ -93,26 +109,20 @@ EREventRecorder >> activateDelivery [
 ]
 
 { #category : #delivery }
-EREventRecorder >> activateDeliveryIfAvailable [
-	^ self canSendDiagnosticsAndUsageData 
+EREventRecorder >> activateDeliveryIfHasPermissionToSend [
+	self hasPermissionToSend
 		ifTrue: [ self activateDelivery ]
-		ifFalse: [ nil ]
 ]
 
 { #category : #adding }
 EREventRecorder >> addCollector: aGTEventCollector [
-	self activateDeliveryIfAvailable.
+	self activateDeliveryIfHasPermissionToSend.
 	^ collectors add: aGTEventCollector
 ]
 
 { #category : #accessing }
 EREventRecorder >> announcer [
 	^ announcer ifNil: [ announcer := Announcer new ]
-]
-
-{ #category : #testing }
-EREventRecorder >> canSendDiagnosticsAndUsageData [
-	^ privacy value
 ]
 
 { #category : #delivery }
@@ -136,23 +146,53 @@ EREventRecorder >> deliveryPreSuspendingAction: aBlockClosure [
 	self delivery preSuspendingAction: aBlockClosure
 ]
 
+{ #category : #configuration }
+EREventRecorder >> disableDeliveryPermission [
+	delivery disablePermission
+]
+
+{ #category : #configuration }
+EREventRecorder >> disablePermissionToSend [
+	"testing purpose"
+	settings disablePermissionToSend
+]
+
+{ #category : #configuration }
+EREventRecorder >> enableDeliveryPermission [
+	delivery enablePermission
+]
+
+{ #category : #configuration }
+EREventRecorder >> enablePermissionToSend [
+	"testing purpose"
+	settings enablePermissionToSend
+]
+
 { #category : #packing }
 EREventRecorder >> flush [
 	"Be careful! You will lost all data."
 	collectors do: #flush
 ]
 
+{ #category : #testing }
+EREventRecorder >> hasPermissionToSend [
+	^ settings hasPermissionToSend
+]
+
 { #category : #initialization }
-EREventRecorder >> initialize [
-	super initialize.
-	privacy := [ ERPrivacy sendDiagnosticsAndUsageData ].
+EREventRecorder >> initializeWith: aRecorderSettings [
+
+	self initialize.
 	collectors := EREventCollectors new.
+	packing := EREventPacking default.
+
 	delivery := EREventDelivery new.
 	delivery recorder: self.
-	packing := EREventPacking default.
-	self canSendDiagnosticsAndUsageData 
-			ifTrue: [ delivery offerPermission ]
-			ifFalse: [ delivery withdrawPermission ]
+
+	settings := aRecorderSettings.
+	settings hasPermissionToSend
+		ifTrue: [ delivery enablePermission ]
+		ifFalse: [ delivery disablePermission ]
 ]
 
 { #category : #testing }
@@ -175,21 +215,10 @@ EREventRecorder >> numberOfDeliveryData [
 	^ delivery size
 ]
 
-{ #category : #configuration }
-EREventRecorder >> offerDeliveryPermission [
-	delivery offerPermission
-]
-
-{ #category : #configuration }
-EREventRecorder >> offerPrivacy [
-	"testing purpose"
-	privacy := true
-]
-
 { #category : #packing }
 EREventRecorder >> pack [
 	| allCollectors consolidatedCollectors |
-	self canSendDiagnosticsAndUsageData ifFalse: [ ^ self flush; yourself ].
+	self hasPermissionToSend ifFalse: [ ^ self flush; yourself ].
 	allCollectors := OrderedCollection new: collectors size.
 	collectors do: [ :eachCollector | allCollectors addLast: eachCollector ].
 	consolidatedCollectors := EREventConsolidate new collectors: allCollectors; consolidated.
@@ -202,7 +231,7 @@ EREventRecorder >> pack [
 
 { #category : #'event handling' }
 EREventRecorder >> privacyChanged [
-	self canSendDiagnosticsAndUsageData 
+	self hasPermissionToSend 
 		ifTrue: [ self numberOfCollectors > 0 
 						ifTrue: [ self activateDelivery ] ]
 		ifFalse: [ self deactivateDelivery ]
@@ -219,15 +248,4 @@ EREventRecorder >> removeCollector: aGTEventCollector [
 { #category : #removing }
 EREventRecorder >> removeLiberatedCollectors [
 	collectors removeLiberatedCollectors
-]
-
-{ #category : #configuration }
-EREventRecorder >> withdrawDeliveryPermission [
-	delivery withdrawPermission
-]
-
-{ #category : #configuration }
-EREventRecorder >> withdrawPrivacy [
-	"testing purpose"
-	privacy := false
 ]

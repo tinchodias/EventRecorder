@@ -32,7 +32,7 @@ Class {
 EREventDelivery >> activate [
 	"Initialize a delivery process."
 	^ mutex critical: [ 
-			self offerPermission.
+			self enablePermission.
 			self isInactive ifTrue: [ self initializeProcess ].
 			process ]
 ]
@@ -64,7 +64,7 @@ EREventDelivery >> bundles [
 { #category : #deactivation }
 EREventDelivery >> deactivate [
 	^ mutex critical: [ | oldProcess |
-		self withdrawPermission.
+		self disablePermission.
 		delay ifNotNil: [ :aDelay | aDelay delaySemaphore signal ].
 		oldProcess := process.
 		process := nil.
@@ -118,6 +118,16 @@ EREventDelivery >> deliveryCycle [
 	self hasPermission ifTrue: [ self packAndDeliver: false ]
 ]
 
+{ #category : #deactivation }
+EREventDelivery >> disablePermission [
+	mutex critical: [ permission := false ]
+]
+
+{ #category : #activation }
+EREventDelivery >> enablePermission [
+	mutex critical: [ permission := true ]
+]
+
 { #category : #testing }
 EREventDelivery >> hasPermission [
 	^ permission
@@ -162,11 +172,6 @@ EREventDelivery >> isInactive [
 EREventDelivery >> now [
 	"for testing purpose"
 	delay ifNotNil: [ :aDelay | aDelay delaySemaphore signal. aDelay unschedule. ]
-]
-
-{ #category : #activation }
-EREventDelivery >> offerPermission [
-	mutex critical: [ permission := true ]
 ]
 
 { #category : #delivery }
@@ -234,9 +239,4 @@ EREventDelivery >> recorder: anObject [
 { #category : #accessing }
 EREventDelivery >> size [
 	^ queue size
-]
-
-{ #category : #deactivation }
-EREventDelivery >> withdrawPermission [
-	mutex critical: [ permission := false ]
 ]

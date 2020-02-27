@@ -8,7 +8,7 @@ Class {
 		'info',
 		'timestamp'
 	],
-	#category : #'EventRecorder-Core'
+	#category : #'EventRecorder-PharoUsageData'
 }
 
 { #category : #comparing }
@@ -99,11 +99,7 @@ ERBasicRecorderEvent >> infoAt: key putHashForText: valueString [
 ERBasicRecorderEvent >> initialize [
 	super initialize.
 	timestamp := DateAndTime now.
-]
-
-{ #category : #initialization }
-ERBasicRecorderEvent >> initializeObfuscated [
-	self obfuscated: ERPrivacy sendEntityNames not.
+	self obfuscated: ERPharoUsageDataPrivacy sendEntityNames not.
 ]
 
 { #category : #'accessing - announcement info' }
@@ -113,7 +109,7 @@ ERBasicRecorderEvent >> latestUpdate [
 
 { #category : #accessing }
 ERBasicRecorderEvent >> obfuscateIfNecessary: anObject [
-	^ ERPrivacy sendEntityNames
+	^ ERPharoUsageDataPrivacy sendEntityNames
 		ifTrue: [ anObject ]
 		ifFalse: [ GlobalIdentifier uniqueInstance obfuscate: anObject ]
 ]

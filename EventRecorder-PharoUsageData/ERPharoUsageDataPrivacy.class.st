@@ -15,26 +15,41 @@ Public API and Key Messages
 
 "
 Class {
-	#name : #ERPrivacy,
+	#name : #ERPharoUsageDataPrivacy,
 	#superclass : #Object,
 	#classInstVars : [
 		'sendDiagnosticsAndUsageData',
 		'sendEntityNames',
 		'sendSourceCode'
 	],
-	#category : #'EventRecorder-Privacy'
+	#category : #'EventRecorder-PharoUsageData'
 }
 
 { #category : #cleanup }
-ERPrivacy class >> cleanUp [
+ERPharoUsageDataPrivacy class >> cleanUp [
 	"Clean settings."
 	sendDiagnosticsAndUsageData := nil.
 	sendEntityNames := nil.
 	sendSourceCode := nil.
 ]
 
+{ #category : #accessing }
+ERPharoUsageDataPrivacy class >> disablePermissionToSend [
+	self sendDiagnosticsAndUsageData: false
+]
+
+{ #category : #accessing }
+ERPharoUsageDataPrivacy class >> enablePermissionToSend [
+	self sendDiagnosticsAndUsageData: true
+]
+
+{ #category : #accessing }
+ERPharoUsageDataPrivacy class >> hasPermissionToSend [
+	^ self sendDiagnosticsAndUsageData
+]
+
 { #category : #settings }
-ERPrivacy class >> privacySettingsOn: aBuilder [
+ERPharoUsageDataPrivacy class >> privacySettingsOn: aBuilder [
 	<systemsettings>
 	(aBuilder group: #privacy)
 		label: 'Privacy';
@@ -43,19 +58,19 @@ ERPrivacy class >> privacySettingsOn: aBuilder [
 ]
 
 { #category : #accessing }
-ERPrivacy class >> sendDiagnosticsAndUsageData [
+ERPharoUsageDataPrivacy class >> sendDiagnosticsAndUsageData [
 	^ sendDiagnosticsAndUsageData ifNil: [ sendDiagnosticsAndUsageData := false ]
 ]
 
 { #category : #accessing }
-ERPrivacy class >> sendDiagnosticsAndUsageData: aBoolean [
+ERPharoUsageDataPrivacy class >> sendDiagnosticsAndUsageData: aBoolean [
 	sendDiagnosticsAndUsageData = aBoolean ifTrue: [ ^ self ].
 	sendDiagnosticsAndUsageData := aBoolean.
-	SystemAnnouncer uniqueInstance announce: ERPrivacyChangedAnnouncement.
+	SystemAnnouncer uniqueInstance announce: ERPharoUsageDataPrivacyChangedAnnouncement.
 ]
 
 { #category : #settings }
-ERPrivacy class >> sendDiagnosticsAndUsageUsageDataSettingsOn: aBuilder [
+ERPharoUsageDataPrivacy class >> sendDiagnosticsAndUsageUsageDataSettingsOn: aBuilder [
 	<systemsettings>
 	(aBuilder setting: #sendDiagnosticsAndUsageData)
 		label: 'Send diagnostics and usage data';
@@ -66,17 +81,17 @@ ERPrivacy class >> sendDiagnosticsAndUsageUsageDataSettingsOn: aBuilder [
 ]
 
 { #category : #accessing }
-ERPrivacy class >> sendEntityNames [
+ERPharoUsageDataPrivacy class >> sendEntityNames [
 	^ sendEntityNames ifNil: [ sendEntityNames := false ]
 ]
 
 { #category : #accessing }
-ERPrivacy class >> sendEntityNames: aBoolean [
+ERPharoUsageDataPrivacy class >> sendEntityNames: aBoolean [
 	sendEntityNames := aBoolean
 ]
 
 { #category : #settings }
-ERPrivacy class >> sendEntityNamesSettingsOn: aBuilder [
+ERPharoUsageDataPrivacy class >> sendEntityNamesSettingsOn: aBuilder [
 	<systemsettings>
 	(aBuilder setting: #sendEntityNames)
 		label: 'Include package/class/method names';
@@ -87,17 +102,17 @@ ERPrivacy class >> sendEntityNamesSettingsOn: aBuilder [
 ]
 
 { #category : #accessing }
-ERPrivacy class >> sendSourceCode [
+ERPharoUsageDataPrivacy class >> sendSourceCode [
 	^ sendSourceCode ifNil: [ sendSourceCode := false ]
 ]
 
 { #category : #accessing }
-ERPrivacy class >> sendSourceCode: aBoolean [
+ERPharoUsageDataPrivacy class >> sendSourceCode: aBoolean [
 	sendSourceCode := aBoolean
 ]
 
 { #category : #settings }
-ERPrivacy class >> sendSourceCodeSettingsOn: aBuilder [
+ERPharoUsageDataPrivacy class >> sendSourceCodeSettingsOn: aBuilder [
 	<systemsettings>
 	(aBuilder setting: #sendSourceCode)
 		label: 'Include source code';

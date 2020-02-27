@@ -196,7 +196,7 @@ EREventRecorderDelegateTest >> testHandlePutOfEventRecorder [
 	server when: ZnServerConnectionClosedEvent do: [ :announcement | semaphore signal ].
 	recorder := EREventRecorder new.
 	recorder deliveryPreSuspendingAction: [ recorder deliveryPreSuspendingAction: []. semaphore signal ].
-	recorder offerPrivacy.
+	recorder enablePermissionToSend.
 	collector := EREventCollector new.
 	collector url: (server url
 		addPathSegment: 'gt';

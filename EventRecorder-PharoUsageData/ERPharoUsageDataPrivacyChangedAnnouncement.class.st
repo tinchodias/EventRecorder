@@ -2,7 +2,7 @@
 I announce  changes on Privacy settings in SystemAnnouncer uniqueInstance.
 "
 Class {
-	#name : #ERPrivacyChangedAnnouncement,
+	#name : #ERPharoUsageDataPrivacyChangedAnnouncement,
 	#superclass : #Announcement,
-	#category : #'EventRecorder-Privacy'
+	#category : #'EventRecorder-PharoUsageData'
 }

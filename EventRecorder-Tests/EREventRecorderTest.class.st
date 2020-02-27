@@ -25,7 +25,7 @@ EREventRecorderTest >> assertReceiverSemaphore [
 
 { #category : #asserting }
 EREventRecorderTest >> assertSemaphore [
-	self deny: (semaphore waitTimeoutMSecs: 200)
+	self deny: (semaphore waitTimeoutMSecs: 500)
 ]
 
 { #category : #asserting }
@@ -46,7 +46,7 @@ EREventRecorderTest >> setUp [
 	self setUpServer.
 	semaphore := Semaphore new.
 	recorder := EREventRecorder new.
-	recorder offerPrivacy; offerDeliveryPermission.
+	recorder enablePermissionToSend; enableDeliveryPermission.
 	collector1 := EREventCollector new.
 	collector1 url: server url.
 	collector2 := EREventCollector new.
@@ -248,13 +248,13 @@ EREventRecorderTest >> testPack3 [
 { #category : #tests }
 EREventRecorderTest >> testPrivacyChanged [
 	"Ensure that delivery is turn off when privacy is disabled."
-	self assert: recorder canSendDiagnosticsAndUsageData.
+	self assert: recorder hasPermissionToSend.
 	self assert: recorder delivery hasPermission.
-	recorder withdrawPrivacy.
-	self deny: recorder canSendDiagnosticsAndUsageData.
+	recorder disablePermissionToSend.
+	self deny: recorder hasPermissionToSend.
 	self assert: recorder delivery hasPermission.
 	recorder privacyChanged.
-	self deny: recorder canSendDiagnosticsAndUsageData.
+	self deny: recorder hasPermissionToSend.
 	self deny: recorder delivery hasPermission.
 
 ]
@@ -263,11 +263,11 @@ EREventRecorderTest >> testPrivacyChanged [
 EREventRecorderTest >> testPrivacyChanged2 [
 	"Ensure that delivery is turn off when privacy is available, but there is no any collector."
 	self testPrivacyChanged.
-	recorder offerPrivacy.
-	self assert: recorder canSendDiagnosticsAndUsageData.
+	recorder enablePermissionToSend.
+	self assert: recorder hasPermissionToSend.
 	self deny: recorder delivery hasPermission.
 	recorder privacyChanged.
-	self assert: recorder canSendDiagnosticsAndUsageData.
+	self assert: recorder hasPermissionToSend.
 	self deny: recorder delivery hasPermission.
 
 ]
@@ -277,13 +277,13 @@ EREventRecorderTest >> testPrivacyChanged3 [
 	"Ensure that delivery is turn on when privacy is available and there is a collector."
 	self testPrivacyChanged.
 	recorder addCollector: collector1.
-	self deny: recorder canSendDiagnosticsAndUsageData.
+	self deny: recorder hasPermissionToSend.
 	self deny: recorder delivery hasPermission.
-	recorder offerPrivacy.
-	self assert: recorder canSendDiagnosticsAndUsageData.
+	recorder enablePermissionToSend.
+	self assert: recorder hasPermissionToSend.
 	self deny: recorder delivery hasPermission.
 	recorder privacyChanged.
-	self assert: recorder canSendDiagnosticsAndUsageData.
+	self assert: recorder hasPermissionToSend.
 	self assert: recorder delivery hasPermission.
 
 ]
@@ -292,14 +292,14 @@ EREventRecorderTest >> testPrivacyChanged3 [
 EREventRecorderTest >> testPrivacyChanged4 [
 	"Ensure that delivery is turn on when privacy is available and there is a collector."
 	self testPrivacyChanged.
-	recorder offerPrivacy.
-	self assert: recorder canSendDiagnosticsAndUsageData.
+	recorder enablePermissionToSend.
+	self assert: recorder hasPermissionToSend.
 	self deny: recorder delivery hasPermission.
 	recorder privacyChanged.
-	self assert: recorder canSendDiagnosticsAndUsageData.
+	self assert: recorder hasPermissionToSend.
 	self deny: recorder delivery hasPermission.
 	recorder addCollector: collector1.
-	self assert: recorder canSendDiagnosticsAndUsageData.
+	self assert: recorder hasPermissionToSend.
 	self assert: recorder delivery hasPermission.
 
 ]

@@ -74,7 +74,7 @@ EREventCollector >> add: anEvent [
 { #category : #adding }
 EREventCollector >> addIfAvailable: anEvent [
 	"It add event to a queue only if sending diagnostic and usage data is enabled."
-	ERPrivacy sendDiagnosticsAndUsageData ifFalse: [ ^ anEvent ].	
+	ERPharoUsageDataPrivacy sendDiagnosticsAndUsageData ifFalse: [ ^ anEvent ].	
 	^ self add: anEvent
 ]
 
