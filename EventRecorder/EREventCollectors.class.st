@@ -1,9 +1,9 @@
 "
-I represent a collection of GTEventCollector objects. GTEventRecorder uses me and I am responsible for adding and removing the collectors.
+I represent a collection of EREventCollector objects. EREventRecorder uses me and I am responsible for manipulating the collectors in an atomic way (using a Mutex).
 
 Public API and Key Messages
 
-- add:  
+- add:
 - remove:
  
 Internal Representation and Key Implementation Points.

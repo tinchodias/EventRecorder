@@ -5,7 +5,7 @@ Class {
 	#name : #EREventMultiBundleFactory,
 	#superclass : #Object,
 	#instVars : [
-		'multiBundles'
+		'multiBundleByUrl'
 	],
 	#category : #'EventRecorder-Support'
 }
@@ -21,20 +21,16 @@ EREventMultiBundleFactory class >> fromBundles: aCollection [
 ]
 
 { #category : #public }
-EREventMultiBundleFactory >> fromBundles: aCollection [ 
-	multiBundles := OrderedDictionary new.
-	aCollection do: [ :aSingleOrMultiBundle | self synthetize: aSingleOrMultiBundle.].
+EREventMultiBundleFactory >> fromBundles: aCollection [
+	multiBundleByUrl := OrderedDictionary new.
+	aCollection
+		do: [ :anEventBundle | anEventBundle accept: self ].
 	^ self multiBundles
 ]
 
 { #category : #accessing }
 EREventMultiBundleFactory >> multiBundles [
-	^ multiBundles asOrderedCollection
-]
-
-{ #category : #private }
-EREventMultiBundleFactory >> synthetize: aSingleOrMultiBundle [
-	aSingleOrMultiBundle accept: self
+	^ multiBundleByUrl asOrderedCollection
 ]
 
 { #category : #visitor }
@@ -46,8 +42,11 @@ EREventMultiBundleFactory >> visitMultiBundle: aMultiBundle [
 { #category : #visitor }
 EREventMultiBundleFactory >> visitSingleBundle: aSingleBundle [
 	| multiBundle |
-	multiBundle := multiBundles 
-							at: aSingleBundle url 
-							ifAbsentPut: [ EREventMultiBundle new url: aSingleBundle url; yourself ].
+	multiBundle := multiBundleByUrl
+		at: aSingleBundle url
+		ifAbsentPut: [
+			EREventMultiBundle new
+				url: aSingleBundle url;
+				yourself ].
 	multiBundle add: aSingleBundle
 ]

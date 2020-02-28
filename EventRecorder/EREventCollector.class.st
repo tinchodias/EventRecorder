@@ -46,8 +46,8 @@ Class {
 		'url',
 		'category',
 		'recordedEvents',
-		'registry',
-		'updateAnnouncementBlock'
+		'updateAnnouncementBlock',
+		'ownerWeakValueHolder'
 	],
 	#category : #'EventRecorder-Core'
 }
@@ -66,26 +66,30 @@ EREventCollector class >> registeredCollector [
 ]
 
 { #category : #adding }
-EREventCollector >> add: anEvent [ 
+EREventCollector >> add: anEvent [
 	"And an event (any object) that you want to send to a server."
+
 	^ recordedEvents nextPut: anEvent
 ]
 
 { #category : #adding }
 EREventCollector >> addIfAvailable: anEvent [
 	"It add event to a queue only if sending diagnostic and usage data is enabled."
-	ERPharoUsageDataPrivacy sendDiagnosticsAndUsageData ifFalse: [ ^ anEvent ].	
+
+	ERPharoUsageDataPrivacy sendDiagnosticsAndUsageData
+		ifFalse: [ ^ anEvent ].
 	self add: anEvent
 ]
 
 { #category : #accessing }
 EREventCollector >> bundle [
-	"It returns all collected events that are supposed to be sent. If you need to send just a portion of the collected events, this is the place to overwrite."
-	^ self bundle: OrderedCollection new.
+	"Return all collected events that are supposed to be sent. If you need to send just a portion of the collected events, this is the place to overwrite."
+
+	^ self bundleEventsOn: OrderedCollection new
 ]
 
 { #category : #accessing }
-EREventCollector >> bundle: aCollection [
+EREventCollector >> bundleEventsOn: aCollection [
 	recordedEvents flush: [ :eachEvent | aCollection addLast: eachEvent ].
 	^ aCollection
 ]
@@ -96,9 +100,10 @@ EREventCollector >> category [
 ]
 
 { #category : #accessing }
-EREventCollector >> category: aString [ 
+EREventCollector >> category: aString [
 	"It is used for distinguishing data from different application on a server.
 	The data are stored separately on a server according to category name."
+
 	^ category := aString
 ]
 
@@ -106,12 +111,14 @@ EREventCollector >> category: aString [
 EREventCollector >> defaultCategory [
 	"Default category name. You can set your own by calling #category: or 
 	by overwriting this method if you have a spetialized subclass."
+
 	^ #unknown
 ]
 
 { #category : #accessing }
 EREventCollector >> flush [
 	"Be careful when using it. You will lost all data."
+
 	recordedEvents flush
 ]
 
@@ -129,19 +136,29 @@ EREventCollector >> isEmpty [
 { #category : #testing }
 EREventCollector >> isLiberated [
 	"When I answer true, I can be removed from a EREventRecorder object."
-	^ self registry isLiberated and: [ recordedEvents isEmpty ]
+
+	^ self occupantWeakValueHolder isLiberated
+		and: [ recordedEvents isEmpty ]
 ]
 
 { #category : #actions }
 EREventCollector >> liberate [
 	"Liberate me from the occupant so I can be removed from EREventRecorder object in the next delivery cycle."
-	^ self registry liberate.
+	^ self occupantWeakValueHolder liberate.
 ]
 
 { #category : #accessing }
-EREventCollector >> occupant: anObject [ 
-	"anObject sends me data. I weakly keeps anObject and once it is released, I can be removed from EREventRecorder object."
-	self registry object: anObject
+EREventCollector >> occupant: anObject [
+	"anObject sends me data. I weakly keep anObject and once it is liberated (released), I can be removed from EREventRecorder object."
+
+	self occupantWeakValueHolder object: anObject
+]
+
+{ #category : #accessing }
+EREventCollector >> occupantWeakValueHolder [
+	"I answer a weak holder of my owner. Once it is nil, I can be removed from EREventRecorder object."
+
+	^ ownerWeakValueHolder ifNil: [ ownerWeakValueHolder := ERWeakValueHolder new ]
 ]
 
 { #category : #printing }
@@ -159,19 +176,14 @@ EREventCollector >> printOn: aStream [
 { #category : #initialization }
 EREventCollector >> register [
 	"Register to the global EREventRecorder."
-	EREventRecorder uniqueInstance addCollector: self.
-]
 
-{ #category : #accessing }
-EREventCollector >> registry [
-	"Registry is a weak holder of my owner. Once it is nil, I can be removed from EREventRecorder object."
-
-	^ registry ifNil: [ registry := EREventRegistry new ]
+	EREventRecorder uniqueInstance addCollector: self
 ]
 
 { #category : #accessing }
 EREventCollector >> size [
 	"It returns number of collected events."
+
 	^ recordedEvents size
 ]
 
@@ -190,11 +202,13 @@ EREventCollector >> updateAnnouncementBlock: aBlockClosure [
 { #category : #accessing }
 EREventCollector >> url [
 	"It returns URL indicating where to send collected data."
+
 	^ url ifNil: [ url := EREventRecorderSettings url ]
 ]
 
 { #category : #accessing }
 EREventCollector >> url: aZnUrl [
 	"URL that indicates where to send collected data."
+
 	url := aZnUrl
 ]

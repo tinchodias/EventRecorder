@@ -54,10 +54,12 @@ EREventDelivery >> announcer [
 
 { #category : #delivery }
 EREventDelivery >> bundles [
-	"Be careful about using this method. You will loose data if you call it externaly."
+	"Be careful about using this method. You will loose data if you call it externally."
+
 	| eventBundles |
 	eventBundles := OrderedCollection new.
-	queue flush: [ :eachEREventBundle | eventBundles addLast: eachEREventBundle ].
+	queue
+		flush: [ :eachEREventBundle | eventBundles addLast: eachEREventBundle ].
 	^ eventBundles
 ]
 
@@ -85,16 +87,16 @@ EREventDelivery >> deliver: aBoolean [
 ]
 
 { #category : #delivery }
-EREventDelivery >> deliver: aEREventMultiBundle signalProgress: aBoolean [
+EREventDelivery >> deliver: aEREventBundle signalProgress: aBoolean [
 	^ (ZnClient new
 			beOneShot;
 			timeout: 5;
 			signalProgress: aBoolean;
 			numberOfRetries: 0;
-			url: aEREventMultiBundle url;
+			url: aEREventBundle url;
 			enforceHttpSuccess: true;
-			ifFail: [ :exception | queue nextPut: aEREventMultiBundle ];
-			entity: aEREventMultiBundle entity;
+			ifFail: [ :exception | queue nextPut: aEREventBundle ];
+			entity: aEREventBundle asZnEntity;
 			put;
 			response)
 ]

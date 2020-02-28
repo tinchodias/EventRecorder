@@ -16,7 +16,7 @@ Internal Representation and Key Implementation Points.
 
 "
 Class {
-	#name : #EREventRegistry,
+	#name : #ERWeakValueHolder,
 	#superclass : #Object,
 	#instVars : [
 		'weakHolder'
@@ -25,28 +25,28 @@ Class {
 }
 
 { #category : #initialization }
-EREventRegistry >> initialize [
+ERWeakValueHolder >> initialize [
 	super initialize.
 	weakHolder := WeakArray new: 1.
 ]
 
 { #category : #testing }
-EREventRegistry >> isLiberated [
+ERWeakValueHolder >> isLiberated [
 	^ (weakHolder at: 1) isNil
 ]
 
 { #category : #actions }
-EREventRegistry >> liberate [
+ERWeakValueHolder >> liberate [
 	self object: nil.
 ]
 
 { #category : #accessing }
-EREventRegistry >> object: anObject [ 
+ERWeakValueHolder >> object: anObject [ 
 	weakHolder at: 1 put: anObject.
 ]
 
 { #category : #printing }
-EREventRegistry >> printOn: aStream [
+ERWeakValueHolder >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		nextPut: $(;

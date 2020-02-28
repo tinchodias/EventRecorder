@@ -55,7 +55,7 @@ EREventPacking >> newAnnouncementFor: aEREventCollector [
 
 { #category : #packing }
 EREventPacking >> pack: aEREventCollector [
-	^ EREventBundle new
+	^ EREventSingleBundle new
 			url: aEREventCollector url;
 			category: aEREventCollector category;
 			data: (self packCollector: aEREventCollector);
