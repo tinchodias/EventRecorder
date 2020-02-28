@@ -31,8 +31,8 @@ EREventMultiBundle >> accept: aVisitor [
 ]
 
 { #category : #adding }
-EREventMultiBundle >> add: aGTEventBundle [ 
-	^ self bundles addLast: aGTEventBundle
+EREventMultiBundle >> add: aEREventBundle [ 
+	self bundles addLast: aEREventBundle
 ]
 
 { #category : #accessing }
