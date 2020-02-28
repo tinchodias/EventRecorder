@@ -8,7 +8,7 @@ Class {
 		'info',
 		'timestamp'
 	],
-	#category : #'EventRecorder-PharoUsageData'
+	#category : #'EventRecorder-Support'
 }
 
 { #category : #comparing }
