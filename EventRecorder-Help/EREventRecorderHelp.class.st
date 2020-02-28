@@ -88,7 +88,7 @@ EREventRecorderHelp class >> client [
 
 	{EREventRecorder} is a singleton that is responsible for collecting and sending data to a server. You, as a Event Recorder user, do not need to take care much of this object. Once you register your {EREventCollector} object, it does the job.
 	
-	It sends data to the server every twenty minutes. If you want to send data immediately, you can execute `{EREventRecorder} uniqueInstance deliverNow`.
+	Be default, it sends data to the server every twenty minutes. If you want to send data immediately, you can use `#deliverNow` method.
 
 	For more information, read the class comment of {EREventRecorder}.
 	
@@ -98,13 +98,13 @@ EREventRecorderHelp class >> client [
 	
 	{EREventCollector} new
 		category: #testingForFun; 	"the data are stored under the defined category."
-		occupant: nil; 					"object that represents your application, if nil, the collector will be removed from {EREventRecorder} object once collected data are sent"
+		occupant: nil; 					"object that represents your application; if nil, the collector will be removed from {EREventRecorder} object once collected data are sent"
 		add: 42; 							"collected data"
 		add: ''Hello Pharo user''; 	"collected data"
 		register; 						"please, be aware that we collect the data"
 		yourself.
 
-	As you can see, you can collect any data that is possible to serialize. The current version uses STON for data serialization, see {ERStonPacking} class. 
+	As you can see, you can collect any data that is possible to serialize. By default, it uses STON for data serialization (see {ERStonPacking} class), but a Fuel alternative is available, too.
 	
 	Before the data are sent to the server, it is serialized and kept by an {EREventAnnouncement} object who also keeps additional information, e.g., computer-id, data and time. The additional information helps you to group collected data per computer and order them according to time. For that reason, we recommend you to collect objects that responds to #infoAt:put:. If so, the additional information is passed to your extracted data.  {ERBasicRecorderEvent} class represents a basic example that we recommend to use, e.g., subclass it. 
 
