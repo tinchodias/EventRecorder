@@ -51,13 +51,6 @@ EREventRecorder class >> initializeUniqueInstance [
 	^ uniqueInstance
 ]
 
-{ #category : #testing }
-EREventRecorder class >> isGlobalRecorder: anEventRecorder [
-	^ uniqueInstance 
-			ifNil: false
-			ifNotNil: [ :anInstance | anInstance == anEventRecorder ]
-]
-
 { #category : #'instance creation' }
 EREventRecorder class >> new [
 	"Answer a new instance with the default settings."
@@ -198,11 +191,6 @@ EREventRecorder >> initializeWith: aRecorderSettings [
 { #category : #testing }
 EREventRecorder >> isDeliveryActive [
 	^ delivery isActive
-]
-
-{ #category : #testing }
-EREventRecorder >> isGlobalRecorder [
-	^ self class isGlobalRecorder: self
 ]
 
 { #category : #convenient }

@@ -154,13 +154,6 @@ EREventDelivery >> isActive [
 ]
 
 { #category : #testing }
-EREventDelivery >> isGlobalRecorder [
-	^ self recorder 
-			ifNil: false
-			ifNotNil: #isGlobalRecorder
-]
-
-{ #category : #testing }
 EREventDelivery >> isInactive [
 	^ mutex critical: [ 
 		process isNil or: [
@@ -219,11 +212,8 @@ EREventDelivery >> printProcessName [
 { #category : #printing }
 EREventDelivery >> printProcessNameOn: aStream [
 	aStream
-		nextPutAll: self className.
-	self isGlobalRecorder
-		ifTrue: [ aStream nextPutAll: ' global ' ]
-		ifFalse: [ aStream nextPutAll: ' a ' ].
-	aStream nextPutAll: 'delivery process'
+		nextPutAll: self className;
+		nextPutAll: ' a delivery process'
 ]
 
 { #category : #accessing }
