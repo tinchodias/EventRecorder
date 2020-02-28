@@ -26,7 +26,7 @@ openSettingsBrowser
 Class {
 	#name : #EREventTool,
 	#superclass : #Object,
-	#category : #'EventRecorder-Core'
+	#category : #'EventRecorder-Server'
 }
 
 { #category : #accessing }
