@@ -30,7 +30,7 @@ EREventRecorderSettings class >> stringUrl: aUrlString [
 
 { #category : #accessing }
 EREventRecorderSettings class >> url [
-	^ url ifNil: [ url := 'http://gc.dcc.uchile.cl.:8080/gt/events' asZnUrl ]
+	^ url ifNil: [ url := 'http://gc.dcc.uchile.cl:8080/gt/events' asZnUrl ]
 ]
 
 { #category : #accessing }

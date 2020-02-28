@@ -34,6 +34,11 @@ EREventTool class >> default [
 	^ self new
 ]
 
+{ #category : #private }
+EREventTool class >> defaultBaseUrl [
+	^ 'http://gc.dcc.uchile.cl/' asZnUrl
+]
+
 { #category : #configuration }
 EREventTool >> defaultDownloadDirectory [
 	^ FileSystem disk workingDirectory
@@ -50,26 +55,27 @@ EREventTool >> defaultEventsDirectory [
 ]
 
 { #category : #private }
-EREventTool >> defaultUrl [
-	^ 'http://gc.dcc.uchile.cl/gt-events.zip'
+EREventTool >> defaultEventsZipUrl [
+	^ self class defaultBaseUrl / 'gt-events.zip'
 ]
 
 { #category : #api }
 EREventTool >> download [
 	"self default download"
  	UIManager default informUserDuring: [ :bar |
-		bar label: 'Downloading Spotter Event Data...'.
+		bar label: 'Downloading Event Data...'.
 		[ ZnClient new
-			url: self defaultUrl;
+			url: self defaultEventsZipUrl;
 			signalProgress: true;
 			downloadTo: self defaultDownloadFilename ]
 		on: HTTPProgress 
 		do: [ :progress |
 			progress isEmpty ifFalse: [ 
 				bar current: progress percentage.
-				progress total ifNotNil: [ :aTotalNumber | | humanReadable |
+				progress total ifNotNil: [ :aTotalNumber |
+					| humanReadable |
 					humanReadable := self printHumanReadableSize: aTotalNumber.
-					bar label: 'Downloading ', humanReadable, ' of Spotter Event Data... ' ] ].
+					bar label: 'Downloading ', humanReadable, ' of Event Data... ' ] ].
 			progress resume ] 
 	]
 ]
