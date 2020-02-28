@@ -102,11 +102,13 @@ EREventPacking >> updateAnnouncement: aGTEventAnnouncement for: aGTEventCollecto
 
 { #category : #accessing }
 EREventPacking >> version [
-	^ 4
+	^ 5
 	
 "
+Changes to (in?) version 5:
+	- Renamed classes (GT* to ER*) and more
 Changes to version 4:
-	- It introduces GTEventMultiBundle object that is used for sending several GTEVentBundle objects to the same server in one HTTP request
+	- It introduces GTEventMultiBundle object that is used for sending several GTEventBundle objects to the same server in one HTTP request
 	- GTStonPacking returns ByteArray instead of ByteString
 Changes to version 3:
 	- GTSpotterEventRecorder rewritten to GTEventRecorder.
