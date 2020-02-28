@@ -110,7 +110,7 @@ EREventRecorder >> activateDeliveryIfHasPermissionToSend [
 { #category : #adding }
 EREventRecorder >> addCollector: aGTEventCollector [
 	self activateDeliveryIfHasPermissionToSend.
-	^ collectors add: aGTEventCollector
+	collectors add: aGTEventCollector
 ]
 
 { #category : #accessing }
