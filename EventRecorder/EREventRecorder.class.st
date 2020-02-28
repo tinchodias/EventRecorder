@@ -108,9 +108,9 @@ EREventRecorder >> activateDeliveryIfHasPermissionToSend [
 ]
 
 { #category : #adding }
-EREventRecorder >> addCollector: aGTEventCollector [
+EREventRecorder >> addCollector: aEREventCollector [
 	self activateDeliveryIfHasPermissionToSend.
-	collectors add: aGTEventCollector
+	collectors add: aEREventCollector
 ]
 
 { #category : #accessing }
@@ -226,9 +226,9 @@ EREventRecorder >> privacyChanged [
 ]
 
 { #category : #removing }
-EREventRecorder >> removeCollector: aGTEventCollector [ 
+EREventRecorder >> removeCollector: aEREventCollector [ 
 	| removedCollector |
-	removedCollector := collectors remove: aGTEventCollector.
+	removedCollector := collectors remove: aEREventCollector.
 	collectors isEmpty ifTrue: [ self deactivateDelivery ].
 	^ removedCollector
 ]

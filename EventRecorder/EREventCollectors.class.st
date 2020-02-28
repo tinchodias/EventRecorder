@@ -24,11 +24,11 @@ Class {
 }
 
 { #category : #adding }
-EREventCollectors >> add: aGTEventCollector [
-	^ mutex critical: [ 
-		(collectors identityIncludes: aGTEventCollector)
-			ifFalse: [ collectors add: aGTEventCollector ]
-			ifTrue: [ aGTEventCollector ] ]
+EREventCollectors >> add: aEREventCollector [
+	mutex critical: [
+		(collectors identityIncludes: aEREventCollector)
+			ifFalse: [ collectors add: aEREventCollector ]
+			ifTrue: [ aEREventCollector ] ]
 ]
 
 { #category : #enumerating }
@@ -73,8 +73,8 @@ EREventCollectors >> printOn: aStream [
 ]
 
 { #category : #removing }
-EREventCollectors >> remove: aGTEventCollector [ 
-	^ mutex critical: [ collectors remove: aGTEventCollector ifAbsent: nil ]
+EREventCollectors >> remove: aEREventCollector [ 
+	^ mutex critical: [ collectors remove: aEREventCollector ifAbsent: nil ]
 ]
 
 { #category : #removing }

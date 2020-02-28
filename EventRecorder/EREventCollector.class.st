@@ -75,7 +75,7 @@ EREventCollector >> add: anEvent [
 EREventCollector >> addIfAvailable: anEvent [
 	"It add event to a queue only if sending diagnostic and usage data is enabled."
 	ERPharoUsageDataPrivacy sendDiagnosticsAndUsageData ifFalse: [ ^ anEvent ].	
-	^ self add: anEvent
+	self add: anEvent
 ]
 
 { #category : #accessing }
@@ -128,19 +128,19 @@ EREventCollector >> isEmpty [
 
 { #category : #testing }
 EREventCollector >> isLiberated [
-	"When I answer true, I can be removed from a GTEventRecorder object."
+	"When I answer true, I can be removed from a EREventRecorder object."
 	^ self registry isLiberated and: [ recordedEvents isEmpty ]
 ]
 
 { #category : #actions }
 EREventCollector >> liberate [
-	"Liberate me from the occupant so I can be removed from GTEventRecorder object in the next delivery cycle."
+	"Liberate me from the occupant so I can be removed from EREventRecorder object in the next delivery cycle."
 	^ self registry liberate.
 ]
 
 { #category : #accessing }
 EREventCollector >> occupant: anObject [ 
-	"anObject sends me data. I weakly keeps anObject and once it is released, I can be removed from GTEventRecorder object."
+	"anObject sends me data. I weakly keeps anObject and once it is released, I can be removed from EREventRecorder object."
 	self registry object: anObject
 ]
 
@@ -158,13 +158,14 @@ EREventCollector >> printOn: aStream [
 
 { #category : #initialization }
 EREventCollector >> register [
-	"Register to the global GTEventRecorder."
+	"Register to the global EREventRecorder."
 	EREventRecorder uniqueInstance addCollector: self.
 ]
 
 { #category : #accessing }
 EREventCollector >> registry [
-	"Registry is a weak holder of my owner. Once it is nil, I can be removed from GTEventRecorder object."
+	"Registry is a weak holder of my owner. Once it is nil, I can be removed from EREventRecorder object."
+
 	^ registry ifNil: [ registry := EREventRegistry new ]
 ]
 
@@ -175,10 +176,10 @@ EREventCollector >> size [
 ]
 
 { #category : #updating }
-EREventCollector >> updateAnnouncement: aGTEventAnnouncement [ 
-	updateAnnouncementBlock ifNil: [ ^ aGTEventAnnouncement ].
-	updateAnnouncementBlock cull: aGTEventAnnouncement.
-	^ aGTEventAnnouncement
+EREventCollector >> updateAnnouncement: aEREventAnnouncement [
+	updateAnnouncementBlock ifNil: [ ^ aEREventAnnouncement ].
+	updateAnnouncementBlock cull: aEREventAnnouncement.
+	^ aEREventAnnouncement
 ]
 
 { #category : #updating }

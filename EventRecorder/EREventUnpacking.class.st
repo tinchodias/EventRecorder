@@ -42,8 +42,8 @@ EREventUnpacking class >> default [
 ]
 
 { #category : #adding }
-EREventUnpacking >> addPacking: aGTEventPacking [ 
-	^ self packings addLast: aGTEventPacking
+EREventUnpacking >> addPacking: aEREventPacking [ 
+	^ self packings addLast: aEREventPacking
 ]
 
 { #category : #accessing }

@@ -38,8 +38,8 @@ EREventDelivery >> activate [
 ]
 
 { #category : #adding }
-EREventDelivery >> add: aGTEventBundle [
-	queue nextPut: aGTEventBundle
+EREventDelivery >> add: aEREventBundle [
+	queue nextPut: aEREventBundle
 ]
 
 { #category : #announce }
@@ -57,7 +57,7 @@ EREventDelivery >> bundles [
 	"Be careful about using this method. You will loose data if you call it externaly."
 	| eventBundles |
 	eventBundles := OrderedCollection new.
-	queue flush: [ :eachGTEventBundle | eventBundles addLast: eachGTEventBundle ].
+	queue flush: [ :eachEREventBundle | eventBundles addLast: eachEREventBundle ].
 	^ eventBundles
 ]
 
@@ -80,21 +80,21 @@ EREventDelivery >> defaultDeliveryLapse [
 EREventDelivery >> deliver: aBoolean [
 	| bundles |
 	bundles := EREventMultiBundleFactory fromBundles: self bundles.
-	bundles do: [ :eachGTEventMultiBundle |
-		self deliver: eachGTEventMultiBundle signalProgress: aBoolean ]
+	bundles do: [ :eachEREventMultiBundle |
+		self deliver: eachEREventMultiBundle signalProgress: aBoolean ]
 ]
 
 { #category : #delivery }
-EREventDelivery >> deliver: aGTEventMultiBundle signalProgress: aBoolean [
+EREventDelivery >> deliver: aEREventMultiBundle signalProgress: aBoolean [
 	^ (ZnClient new
 			beOneShot;
 			timeout: 5;
 			signalProgress: aBoolean;
 			numberOfRetries: 0;
-			url: aGTEventMultiBundle url;
+			url: aEREventMultiBundle url;
 			enforceHttpSuccess: true;
-			ifFail: [ :exception | queue nextPut: aGTEventMultiBundle ];
-			entity: aGTEventMultiBundle entity;
+			ifFail: [ :exception | queue nextPut: aEREventMultiBundle ];
+			entity: aEREventMultiBundle entity;
 			put;
 			response)
 ]

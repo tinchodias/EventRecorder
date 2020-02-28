@@ -44,27 +44,27 @@ EREventPacking >> newAnnouncement [
 ]
 
 { #category : #private }
-EREventPacking >> newAnnouncementFor: aGTEventCollector [
+EREventPacking >> newAnnouncementFor: aEREventCollector [
 	| announcement |
 	announcement := self 
 		updateAnnouncement: self newAnnouncement 
-		for: aGTEventCollector.
-	aGTEventCollector updateAnnouncement: announcement.
+		for: aEREventCollector.
+	aEREventCollector updateAnnouncement: announcement.
 	^ announcement
 ]
 
 { #category : #packing }
-EREventPacking >> pack: aGTEventCollector [
+EREventPacking >> pack: aEREventCollector [
 	^ EREventBundle new
-			url: aGTEventCollector url;
-			category: aGTEventCollector category;
-			data: (self packCollector: aGTEventCollector);
+			url: aEREventCollector url;
+			category: aEREventCollector category;
+			data: (self packCollector: aEREventCollector);
 			yourself
 ]
 
 { #category : #private }
-EREventPacking >> packCollector: aGTEventCollector [
-	^ self serialize: (self newAnnouncementFor: aGTEventCollector)
+EREventPacking >> packCollector: aEREventCollector [
+	^ self serialize: (self newAnnouncementFor: aEREventCollector)
 ]
 
 { #category : #private }
@@ -84,10 +84,10 @@ EREventPacking >> unpack: aByteArray [
 ]
 
 { #category : #private }
-EREventPacking >> updateAnnouncement: aGTEventAnnouncement for: aGTEventCollector [
-	^ aGTEventAnnouncement
-			data: (self serialize: aGTEventCollector bundle);
-			category: aGTEventCollector category;
+EREventPacking >> updateAnnouncement: aEREventAnnouncement for: aEREventCollector [
+	^ aEREventAnnouncement
+			data: (self serialize: aEREventCollector bundle);
+			category: aEREventCollector category;
 			serializedBy: self class name;
 			eventRecorderVersion: self version;
 			timestamp: DateAndTime now;
