@@ -27,11 +27,11 @@ BaselineOfEventRecorder >> baseline: spec [
 			package: 'EventRecorder-Help'
 			with: [ spec requires: #( 'EventRecorder') ].
 		spec 
-			package: 'EventRecorder-UI'
+			package: 'EventRecorder-PharoUsageData'
 			with: [ spec requires: #( 'EventRecorder') ].
 		spec 
-			package: 'EventRecorder-UI-Tests'
-			with: [ spec requires: #( 'EventRecorder-UI') ].
+			package: 'EventRecorder-PharoUsageData-Tests'
+			with: [ spec requires: #( 'EventRecorder-PharoUsageData') ].
 		spec 
 			package: 'EventRecorder-Server'
 			with: [ spec requires: #( 'EventRecorder') ].
@@ -39,10 +39,10 @@ BaselineOfEventRecorder >> baseline: spec [
 			package: 'EventRecorder-Server-Tests'
 			with: [ spec requires: #( 'EventRecorder-Server') ].
 		
-		spec 
-			group: 'Core' with: #('EventRecorder' );
-			group: 'default' with: #('EventRecorder-Tests' 'EventRecorder-Fuel-Tests' 'EventRecorder-UI-Tests' 'EventRecorder-Server-Tests' 'EventRecorder-Help' 'EventRecorder-Inspector')
-		
+		spec
+			group: 'client' with: #('EventRecorder' 'EventRecorder-Tests' 'EventRecorder-PharoUsageData-Tests' 'EventRecorder-Fuel-Tests' 'EventRecorder-Inspector' 'EventRecorder-Help');
+			group: 'server' with: #('client' 'EventRecorder-Server' 'EventRecorder-Server-Tests');
+			group: 'default' with: #('client')
 		]
 
 ]
