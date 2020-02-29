@@ -189,9 +189,8 @@ EREventCollector >> size [
 
 { #category : #updating }
 EREventCollector >> updateAnnouncement: aEREventAnnouncement [
-	updateAnnouncementBlock ifNil: [ ^ aEREventAnnouncement ].
-	updateAnnouncementBlock cull: aEREventAnnouncement.
-	^ aEREventAnnouncement
+	updateAnnouncementBlock
+		ifNotNil: [ updateAnnouncementBlock cull: aEREventAnnouncement ]
 ]
 
 { #category : #updating }

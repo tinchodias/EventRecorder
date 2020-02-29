@@ -104,7 +104,7 @@ EREventRecorderHelp class >> client [
 		register; 						"please, be aware that we collect the data"
 		yourself.
 
-	As you can see, you can collect any data that is possible to serialize. By default, it uses STON for data serialization (see {ERStonPacking} class), but a Fuel alternative is available, too.
+	You can collect any data that is possible to serialize by the recorder''s packing. By default, it uses STON for data serialization, but a Fuel alternative is available, too (Inspect and browse `{EREventPacking} default`).
 	
 	Before the data are sent to the server, it is serialized and kept by an {EREventAnnouncement} object who also keeps additional information, e.g., computer-id, data and time. The additional information helps you to group collected data per computer and order them according to time. For that reason, we recommend you to collect objects that responds to #infoAt:put:. If so, the additional information is passed to your extracted data.  {ERBasicRecorderEvent} class represents a basic example that we recommend to use, e.g., subclass it. 
 
@@ -113,7 +113,7 @@ EREventRecorderHelp class >> client [
 		'EREventRecorder' -> EREventRecorder.
 		'EREventCollector' -> EREventCollector.
 		'EREventTool' -> EREventTool.
-		'ERStonPacking' -> ERStonPacking.
+		'EREventPacking' -> EREventPacking.
 		'EREventAnnouncement' -> EREventAnnouncement.
 		'ERBasicRecorderEvent' -> ERBasicRecorderEvent.
 		} asDictionary)

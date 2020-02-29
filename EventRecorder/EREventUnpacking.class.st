@@ -64,17 +64,18 @@ EREventUnpacking >> safeUnpackDirectory: aFileReference [
 
 { #category : #packing }
 EREventUnpacking >> unpack: aByteArray [
-	| exceptions |
-	exceptions := OrderedCollection new: self packings size.
-	self packings do: [ :eachEventPacking |
-		[ ^ eachEventPacking unpack: aByteArray ] on: Error
-			do: [ :exception | exceptions addLast: exception ] ].
-	exceptions
-		ifEmpty: [ EREventInitializationError signal: 'Uninitialized unpacking system' ]
-		ifNotEmpty: [ EREventUnpackingError 
-								signal: 'Cannot unpack data' 
-								data: aByteArray 
-								errors: exceptions ].
+	| errors |
+	errors := OrderedCollection new: self packings size.
+	self packings do: [ :eachEventPacking | 
+		[ ^ eachEventPacking unpack: aByteArray ]
+			on: Error
+			do: [ :anError | errors addLast: anError ] ].
+	errors
+		ifEmpty: [
+			EREventInitializationError signal ]
+		ifNotEmpty: [
+			(EREventUnpackingError newWithData: aByteArray errors: errors) signal ].
+
 	"In case of resumed exception it returns nil object."
 	^ nil
 ]
@@ -93,8 +94,11 @@ EREventUnpacking >> unpackDirectory: aFileReference [
 { #category : #packing }
 EREventUnpacking >> unpackFile: aFileReference [
 	"self default unpackFile: './gt/events/' asFileReference allFiles atRandom"
-	^ [ self unpack: (aFileReference binaryReadStreamDo: [ :aStream |  aStream contents ]) ]
-		on: EREventUnpackingError do: [ :anException |
+
+	^ [ self
+		unpack: (aFileReference binaryReadStreamDo: [ :aStream | aStream contents ]) ]
+		on: EREventUnpackingError
+		do: [ :anException | 
 			anException data: aFileReference.
 			anException pass ]
 ]

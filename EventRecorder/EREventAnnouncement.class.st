@@ -102,7 +102,7 @@ EREventAnnouncement >> data: aByteArray [
 	self at: #data put: aByteArray
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - private' }
 EREventAnnouncement >> dictionary [
 	^ dictionary ifNil: [ dictionary := Dictionary new ]
 ]
@@ -117,7 +117,7 @@ EREventAnnouncement >> eventRecorderVersion: anObject [
 	self at: #eventRecorderVersion put: anObject
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - unpacking' }
 EREventAnnouncement >> events [
 	| events |
 	events := self unpackedData.
@@ -157,18 +157,12 @@ EREventAnnouncement >> latestUpdate: anObject [
 
 { #category : #accessing }
 EREventAnnouncement >> migrationRules [
-	^ self dictionary at: #migrationRules ifAbsent: [ nil ]
+	^ self at: #migrationRules
 ]
 
 { #category : #accessing }
 EREventAnnouncement >> migrationRules: aCollectionOrNil [
-	^ self dictionary at: #migrationRules put: aCollectionOrNil
-]
-
-{ #category : #accessing }
-EREventAnnouncement >> safeUnpackedData [
-	"On any error, returns empty collection"
-	^ [ self unpackedData ] on: Error do: [ #() ]
+	self at: #migrationRules put: aCollectionOrNil
 ]
 
 { #category : #accessing }
@@ -213,7 +207,7 @@ EREventAnnouncement >> timestamp: anObject [
 	self at: #timestamp put: anObject
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - unpacking' }
 EREventAnnouncement >> unpackedData [
 	^ self data ifNotNil: [ :aData | 
 		(self class environment at: self serializedBy) new

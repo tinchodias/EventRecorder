@@ -15,12 +15,10 @@ Class {
 }
 
 { #category : #'instance creation' }
-EREventUnpackingError class >> signal: aString data: aByteArray errors: aCollection [ 
-	^ self new
-			data: aByteArray;
-			errors: aCollection;
-			signal: aString;
-			yourself
+EREventUnpackingError class >> newWithData: aByteArray errors: aCollection [
+	^ self basicNew
+		initializeWithData: aByteArray errors: aCollection;
+		yourself
 ]
 
 { #category : #accessing }
@@ -29,22 +27,25 @@ EREventUnpackingError >> data [
 ]
 
 { #category : #accessing }
-EREventUnpackingError >> data: anObject [
-	data := anObject
-]
-
-{ #category : #accessing }
 EREventUnpackingError >> errors [
 	^ errors
 ]
 
-{ #category : #accessing }
-EREventUnpackingError >> errors: anObject [
-	errors := anObject
+{ #category : #initialization }
+EREventUnpackingError >> initializeWithData: aByteArray errors: aCollection [
+		self initialize .
+		
+
 ]
 
 { #category : #private }
 EREventUnpackingError >> isResumable [
 	"Determine whether an exception is resumable."
-	^true
+
+	^ true
+]
+
+{ #category : #accessing }
+EREventUnpackingError >> messageText [
+	^ 'Cannot unpack data'
 ]

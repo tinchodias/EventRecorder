@@ -38,17 +38,11 @@ EREventPacking >> migrations: anObject [
 	"Ignore by default. Subclasses can overwrite it."
 ]
 
-{ #category : #'instance creation' }
-EREventPacking >> newAnnouncement [
-	^ EREventAnnouncement new
-]
-
 { #category : #private }
 EREventPacking >> newAnnouncementFor: aEREventCollector [
 	| announcement |
-	announcement := self 
-		updateAnnouncement: self newAnnouncement 
-		for: aEREventCollector.
+	announcement := EREventAnnouncement new.
+	self update: announcement withCollector: aEREventCollector.
 	aEREventCollector updateAnnouncement: announcement.
 	^ announcement
 ]
@@ -84,20 +78,19 @@ EREventPacking >> unpack: aByteArray [
 ]
 
 { #category : #private }
-EREventPacking >> updateAnnouncement: aEREventAnnouncement for: aEREventCollector [
-	^ aEREventAnnouncement
-			data: (self serialize: aEREventCollector bundle);
-			category: aEREventCollector category;
-			serializedBy: self class name;
-			eventRecorderVersion: self version;
-			timestamp: DateAndTime now;
-			imageHash: SmalltalkImage current imagePath hash;
-			imageVersion: SystemVersion current version;
-			latestUpdate: SystemVersion current commitHash;
-			computerUUID: GlobalIdentifier uniqueInstance computerUUID asString;
-			sessionUUID: SmalltalkImage current session id asString;
-			sessionCreationTime: SmalltalkImage current session creationTime;
-			yourself
+EREventPacking >> update: aEREventAnnouncement withCollector: aEREventCollector [
+	aEREventAnnouncement
+		data: (self serialize: aEREventCollector bundle);
+		category: aEREventCollector category;
+		serializedBy: self class name;
+		eventRecorderVersion: self version;
+		timestamp: DateAndTime now;
+		imageHash: SmalltalkImage current imagePath hash;
+		imageVersion: SystemVersion current version;
+		latestUpdate: SystemVersion current commitHash;
+		computerUUID: GlobalIdentifier uniqueInstance computerUUID asString;
+		sessionUUID: SmalltalkImage current session id asString;
+		sessionCreationTime: SmalltalkImage current session creationTime.
 ]
 
 { #category : #accessing }

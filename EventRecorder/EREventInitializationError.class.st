@@ -9,3 +9,8 @@ Class {
 	#superclass : #EREventRecorderError,
 	#category : #'EventRecorder-Exceptions'
 }
+
+{ #category : #accessing }
+EREventInitializationError >> messageText [
+	^ 'Uninitialized unpacking system'
+]

@@ -75,14 +75,12 @@ EREventCollectorTest >> testPrintOn [
 
 { #category : #tests }
 EREventCollectorTest >> testUpdateAnnouncement [
-	| announcement announcement2 |
-	collector
-		updateAnnouncementBlock:
-			[ :anAnnouncement | anAnnouncement at: #testUpdateAnnouncement put: 42 ].
+	| announcement |
+	collector updateAnnouncementBlock:
+		[ :anAnnouncement | anAnnouncement at: #testUpdateAnnouncement put: 42 ].
 	announcement := EREventAnnouncement new.
 	self assert: (announcement at: #testUpdateAnnouncement) isNil.
-	announcement2 := collector updateAnnouncement: announcement.
-	self assert: announcement identicalTo: announcement2.
+	collector updateAnnouncement: announcement.
 	self assert: (announcement at: #testUpdateAnnouncement) equals: 42
 ]
 
