@@ -86,15 +86,15 @@ EREventRecorderHelp class >> client [
 
 !! {EREventRecorder}
 
-	{EREventRecorder} is a singleton that is responsible for collecting and sending data to a server. You, as a Event Recorder user, do not need to take care much of this object. Once you register your {EREventCollector} object, it does the job.
+	An {EREventRecorder} is responsible for collecting and sending data to a server. You, as a Event Recorder user, do not need to take care much of this object. Once you register your {EREventCollector} object, it does the job.
 	
-	Be default, it sends data to the server every twenty minutes. If you want to send data immediately, you can use `#deliverNow` method.
+	By default, it sends data to the server every twenty minutes. If you want to send data immediately, you can use `#deliverNow` method.
 
 	For more information, read the class comment of {EREventRecorder}.
 	
 !! {EREventCollector}
 
-	{EREventCollector} is a data collector which you want to use. You can create a new instance, register it to the {EREventRecorder} and starts to collect data. Here is a basic example:
+	An {EREventCollector} is a data collector which you want to use. You can create a new instance, register it to the {EREventRecorder} and starts to collect data. Here is a basic example:
 	
 	{EREventCollector} new
 		category: #testingForFun; 	"the data are stored under the defined category."
@@ -104,7 +104,7 @@ EREventRecorderHelp class >> client [
 		register; 						"please, be aware that we collect the data"
 		yourself.
 
-	You can collect any data that is possible to serialize by the recorder''s packing. By default, it uses STON for data serialization, but a Fuel alternative is available, too (Inspect and browse `{EREventPacking} default`).
+	You can collect any data that is possible to serialize by the recorder''s packing. By default, it uses STON for data serialization, but a Fuel alternative is available, too. (Check at `{EREventPacking} default`).
 	
 	Before the data are sent to the server, it is serialized and kept by an {EREventAnnouncement} object who also keeps additional information, e.g., computer-id, data and time. The additional information helps you to group collected data per computer and order them according to time. For that reason, we recommend you to collect objects that responds to #infoAt:put:. If so, the additional information is passed to your extracted data.  {ERBasicRecorderEvent} class represents a basic example that we recommend to use, e.g., subclass it. 
 

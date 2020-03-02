@@ -82,19 +82,6 @@ EREventCollector >> addIfAvailable: anEvent [
 ]
 
 { #category : #accessing }
-EREventCollector >> bundle [
-	"Return all collected events that are supposed to be sent. If you need to send just a portion of the collected events, this is the place to overwrite."
-
-	^ self bundleEventsOn: OrderedCollection new
-]
-
-{ #category : #accessing }
-EREventCollector >> bundleEventsOn: aCollection [
-	recordedEvents flush: [ :eachEvent | aCollection addLast: eachEvent ].
-	^ aCollection
-]
-
-{ #category : #accessing }
 EREventCollector >> category [
 	^ category ifNil: [ category := self defaultCategory ]
 ]
@@ -120,6 +107,21 @@ EREventCollector >> flush [
 	"Be careful when using it. You will lost all data."
 
 	recordedEvents flush
+]
+
+{ #category : #accessing }
+EREventCollector >> flushEventsInto: aCollection [
+	recordedEvents flush: [ :eachEvent | aCollection addLast: eachEvent ]
+]
+
+{ #category : #accessing }
+EREventCollector >> flushedEvents [
+	"Return all collected events that are supposed to be sent. If you need to send just a portion of the collected events, this is the place to overwrite."
+
+	| aCollection |
+	aCollection := OrderedCollection new.
+	self flushEventsInto: aCollection.
+	^ aCollection
 ]
 
 { #category : #initialization }

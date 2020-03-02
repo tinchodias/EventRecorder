@@ -80,7 +80,7 @@ EREventPacking >> unpack: aByteArray [
 { #category : #private }
 EREventPacking >> update: aEREventAnnouncement withCollector: aEREventCollector [
 	aEREventAnnouncement
-		data: (self serialize: aEREventCollector bundle);
+		data: (self serialize: aEREventCollector flushedEvents);
 		category: aEREventCollector category;
 		serializedBy: self class name;
 		eventRecorderVersion: self version;

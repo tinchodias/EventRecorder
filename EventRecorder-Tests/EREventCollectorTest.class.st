@@ -18,15 +18,15 @@ EREventCollectorTest >> setUp [
 
 { #category : #tests }
 EREventCollectorTest >> testBundle [
-	self assert: collector bundle isEmpty
+	self assert: collector flushedEvents isEmpty
 ]
 
 { #category : #tests }
 EREventCollectorTest >> testBundle2 [
 	collector add: ERDummyEvent new.
 	collector add: ERDummyEvent new.
-	self assert: collector bundle size equals: 2.
-	self assert: collector bundle isEmpty.
+	self assert: collector flushedEvents size equals: 2.
+	self assert: collector flushedEvents isEmpty.
 ]
 
 { #category : #tests }

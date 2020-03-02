@@ -25,7 +25,7 @@ Class {
 	#instVars : [
 		'dictionary'
 	],
-	#category : #'EventRecorder-Announcements'
+	#category : #'EventRecorder-Support'
 }
 
 { #category : #examples }
@@ -45,14 +45,6 @@ EREventAnnouncement class >> exampleAnnouncement [
 EREventAnnouncement class >> exampleEmptyAnnouncement [
 	<sampleInstance>
 	^ self new
-]
-
-{ #category : #updating }
-EREventAnnouncement >> addInfoFor: aRecorderEvent [ 
-	(aRecorderEvent respondsTo: #infoAt:put:) ifTrue: [
-		dictionary keysAndValuesDo: [ :key :value |
-			key = #data ifFalse: [ 
-				aRecorderEvent infoAt: key put: value ] ] ]
 ]
 
 { #category : #converting }
@@ -119,10 +111,7 @@ EREventAnnouncement >> eventRecorderVersion: anObject [
 
 { #category : #'accessing - unpacking' }
 EREventAnnouncement >> events [
-	| events |
-	events := self unpackedData.
-	events do: [ :each | self addInfoFor: each ].
-	^ events
+	^ self unpackedData
 ]
 
 { #category : #accessing }

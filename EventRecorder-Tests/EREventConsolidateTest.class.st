@@ -37,7 +37,7 @@ EREventConsolidateTest >> testConsolidated [
 	consolidate collectors: collectors.
 	consolidated := consolidate consolidated.
 	self assert: consolidated size equals: 1.
-	self assert: consolidated first bundle asArray equals: data.
+	self assert: consolidated first flushedEvents asArray equals: data.
 ]
 
 { #category : #tests }
@@ -49,7 +49,7 @@ EREventConsolidateTest >> testConsolidated2 [
 	consolidate collectors: collectors.
 	consolidated := consolidate consolidated.
 	self assert: consolidated size equals: 1.
-	self assert: consolidated first bundle asArray equals: data.
+	self assert: consolidated first flushedEvents asArray equals: data.
 ]
 
 { #category : #tests }
@@ -61,8 +61,8 @@ EREventConsolidateTest >> testConsolidated3 [
 	consolidate collectors: collectors.
 	consolidated := consolidate consolidated.
 	self assert: consolidated size equals: 2.
-	self assert: consolidated first bundle asArray equals: {data first. data third}.
-	self assert: consolidated second bundle asArray equals: {data second}.
+	self assert: consolidated first flushedEvents asArray equals: {data first. data third}.
+	self assert: consolidated second flushedEvents asArray equals: {data second}.
 	
 ]
 
@@ -75,7 +75,7 @@ EREventConsolidateTest >> testConsolidated4 [
 	consolidate collectors: collectors.
 	consolidated := consolidate consolidated.
 	self assert: consolidated size equals: 2.
-	self assert: consolidated first bundle asArray equals: {data first. data third}.
-	self assert: consolidated second bundle asArray equals: {data second}.
+	self assert: consolidated first flushedEvents asArray equals: {data first. data third}.
+	self assert: consolidated second flushedEvents asArray equals: {data second}.
 	
 ]
