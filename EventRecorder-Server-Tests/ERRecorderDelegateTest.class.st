@@ -35,7 +35,7 @@ ERRecorderDelegateTest >> setUp [
 	serverSemaphore := Semaphore new.
 	fileSystem := FileSystem memory.
 	baseUrl := 'http://localhost/gt/zip' asZnUrl.
-	delegate := ERRecorderDelegate newWith: baseUrl.
+	delegate := ERServerDelegate newWith: baseUrl.
 	delegate putHandler directory: fileSystem workingDirectory / 'files'.
 	delegate zipHandler 
 		fileDirectory: fileSystem workingDirectory / 'files';

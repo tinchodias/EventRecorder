@@ -24,7 +24,7 @@ ERRecorderFileStorageTest >> assertLocation: location input: input [
 ERRecorderFileStorageTest >> setUp [
 	super setUp.
 	fileSystem := FileSystem memory.
-	storage := ERRecorderFileStorage new.
+	storage := ERServerFileStorage new.
 	storage directory: fileSystem workingDirectory.
 ]
 

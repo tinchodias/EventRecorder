@@ -1,7 +1,7 @@
-Extension { #name : #ERTool }
+Extension { #name : #ERAnalysisTool }
 
 { #category : #'*EventRecorder-Inspector' }
-ERTool >> gtInspectorActionHelp [
+ERAnalysisTool >> gtInspectorActionHelp [
 	<gtInspectorAction>
 	^ GLMGenericAction new
 		action: [:b | 

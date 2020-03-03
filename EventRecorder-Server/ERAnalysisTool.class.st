@@ -24,38 +24,38 @@ openSettingsBrowser
 
 "
 Class {
-	#name : #ERTool,
+	#name : #ERAnalysisTool,
 	#superclass : #Object,
 	#category : #'EventRecorder-Server'
 }
 
 { #category : #accessing }
-ERTool class >> default [
+ERAnalysisTool class >> default [
 	^ self new
 ]
 
 { #category : #configuration }
-ERTool >> defaultDownloadDirectory [
+ERAnalysisTool >> defaultDownloadDirectory [
 	^ FileSystem disk workingDirectory
 ]
 
 { #category : #configuration }
-ERTool >> defaultDownloadFilename [
+ERAnalysisTool >> defaultDownloadFilename [
 	^ self defaultDownloadDirectory / 'gt-events.zip'
 ]
 
 { #category : #configuration }
-ERTool >> defaultEventsDirectory [
+ERAnalysisTool >> defaultEventsDirectory [
 	^ self defaultDownloadDirectory / 'gt' / 'events'
 ]
 
 { #category : #private }
-ERTool >> defaultEventsZipUrl [
-	^ ERRecorderServer defaultBaseUrl / 'gt-events.zip'
+ERAnalysisTool >> defaultEventsZipUrl [
+	^ ERServer defaultBaseUrl / 'gt-events.zip'
 ]
 
 { #category : #api }
-ERTool >> download [
+ERAnalysisTool >> download [
 	"self default download"
  	UIManager default informUserDuring: [ :bar |
 		bar label: 'Downloading Event Data...'.
@@ -76,17 +76,17 @@ ERTool >> download [
 ]
 
 { #category : #api }
-ERTool >> ensureDownloadedData [
+ERAnalysisTool >> ensureDownloadedData [
 	self defaultDownloadFilename exists ifFalse: [ self download ]
 ]
 
 { #category : #api }
-ERTool >> ensureExtractedData [
+ERAnalysisTool >> ensureExtractedData [
 	self defaultEventsDirectory exists ifFalse: [ self extract ]
 ]
 
 { #category : #api }
-ERTool >> ensureLocalDirectory [
+ERAnalysisTool >> ensureLocalDirectory [
 	"self default ensureLocalDirectory"
 	self 
 		ensureDownloadedData;
@@ -94,12 +94,12 @@ ERTool >> ensureLocalDirectory [
 ]
 
 { #category : #api }
-ERTool >> extract [
+ERAnalysisTool >> extract [
 	(ZipArchive new readFrom: self defaultDownloadFilename) extractAllTo: FileLocator workingDirectory.
 ]
 
 { #category : #printing }
-ERTool >> printHumanReadableSize: aTotalNumber [
+ERAnalysisTool >> printHumanReadableSize: aTotalNumber [
 	| humanReadable length unit |
 	length := ((aTotalNumber decimalDigitLength / 3) truncated) - 1 max: 0.
 	humanReadable := (aTotalNumber / (1024 raisedTo: (length min: 3))) rounded.
@@ -111,14 +111,14 @@ ERTool >> printHumanReadableSize: aTotalNumber [
 ]
 
 { #category : #api }
-ERTool >> unpackAll [
+ERAnalysisTool >> unpackAll [
 	"self default unpackAll inspect"
 	self ensureLocalDirectory.
 	^ ERUnpacking default safeUnpackDirectory: self defaultEventsDirectory.
 ]
 
 { #category : #api }
-ERTool >> unpackAll: aFileReference [
+ERAnalysisTool >> unpackAll: aFileReference [
 	"self default unpackAll: './gt/events' asFileReference.
 	self default unpackAll: './gt/events/roassal2Examples' asFileReference.
 	" 

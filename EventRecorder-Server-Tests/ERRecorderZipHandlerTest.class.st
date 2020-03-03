@@ -15,7 +15,7 @@ Class {
 ERRecorderZipHandlerTest >> setUp [
 	super setUp.
 	fileSystem := FileSystem memory.
-	handler := ERRecorderZipHandler new.
+	handler := ERServerZipHandler new.
 	handler fileDirectory: fileSystem workingDirectory / 'files'.
 	handler zipBaseUrl: 'http://localhost/gt/zip/' asZnUrl.
 ]

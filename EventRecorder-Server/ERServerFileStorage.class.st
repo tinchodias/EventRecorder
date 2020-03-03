@@ -1,5 +1,5 @@
 Class {
-	#name : #ERRecorderFileStorage,
+	#name : #ERServerFileStorage,
 	#superclass : #Object,
 	#instVars : [
 		'directory'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #accessing }
-ERRecorderFileStorage >> atCategory: aString put: aByteArray [
+ERServerFileStorage >> atCategory: aString put: aByteArray [
 	| subDirectory date monthDirectoryName monthDirectory fileName file |
 	subDirectory := (self directory / aString) ensureCreateDirectory; yourself.
 	date := Date today.
@@ -26,16 +26,16 @@ ERRecorderFileStorage >> atCategory: aString put: aByteArray [
 ]
 
 { #category : #accessing }
-ERRecorderFileStorage >> directory [
+ERServerFileStorage >> directory [
 	^ directory
 ]
 
 { #category : #accessing }
-ERRecorderFileStorage >> directory: anObject [
+ERServerFileStorage >> directory: anObject [
 	directory := anObject
 ]
 
 { #category : #accessing }
-ERRecorderFileStorage >> put: aByteArray [
+ERServerFileStorage >> put: aByteArray [
 	^ self atCategory: #unspecified put: aByteArray
 ]

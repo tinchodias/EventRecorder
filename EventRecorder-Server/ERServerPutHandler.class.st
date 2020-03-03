@@ -1,5 +1,5 @@
 Class {
-	#name : #ERRecorderPutHandler,
+	#name : #ERServerPutHandler,
 	#superclass : #Object,
 	#instVars : [
 		'storage'
@@ -8,12 +8,12 @@ Class {
 }
 
 { #category : #accessing }
-ERRecorderPutHandler >> directory: aFileReference [ 
+ERServerPutHandler >> directory: aFileReference [ 
 	self storage directory: aFileReference
 ]
 
 { #category : #testing }
-ERRecorderPutHandler >> hasCategoryAndDataParts: aCollection [
+ERServerPutHandler >> hasCategoryAndDataParts: aCollection [
 	aCollection pairsDo: [ :aCategoryPart :aDataPart |
 		aCategoryPart fieldName = 'category' ifFalse: [ ^ false ].
 		aDataPart fieldName = 'data' ifFalse: [ ^ false ].
@@ -24,12 +24,12 @@ ERRecorderPutHandler >> hasCategoryAndDataParts: aCollection [
 ]
 
 { #category : #testing }
-ERRecorderPutHandler >> isApplicationOctetStream: aZnRequest [
+ERServerPutHandler >> isApplicationOctetStream: aZnRequest [
 	^ aZnRequest hasEntity and: [ aZnRequest contentType matches: ZnMimeType applicationOctetStream ]
 ]
 
 { #category : #testing }
-ERRecorderPutHandler >> isMultiPartFormData: aZnRequest [
+ERServerPutHandler >> isMultiPartFormData: aZnRequest [
 	^ aZnRequest hasEntity 
 		and: [ (aZnRequest contentType matches: ZnMimeType multiPartFormData)
 		and: [ (aZnRequest entity isEmpty not)
@@ -38,21 +38,21 @@ ERRecorderPutHandler >> isMultiPartFormData: aZnRequest [
 ]
 
 { #category : #private }
-ERRecorderPutHandler >> saveByteArray: aByteArray [
+ERServerPutHandler >> saveByteArray: aByteArray [
 	"storage is responsible for storing aByteArray.
 	It returns location."
 	^ self storage put: aByteArray.
 ]
 
 { #category : #private }
-ERRecorderPutHandler >> saveByteArray: aByteArray category: aString [ 
+ERServerPutHandler >> saveByteArray: aByteArray category: aString [ 
 	"storage is responsible for storing aByteArray.
 	It returns location."
 	^ self storage atCategory: aString put: aByteArray.
 ]
 
 { #category : #private }
-ERRecorderPutHandler >> saveMultiPartFormData: anEntity [
+ERServerPutHandler >> saveMultiPartFormData: anEntity [
 	"storage is responsible for storing aByteArray.
 	It returns location."
 	| keys |
@@ -65,17 +65,17 @@ ERRecorderPutHandler >> saveMultiPartFormData: anEntity [
 ]
 
 { #category : #accessing }
-ERRecorderPutHandler >> storage [
+ERServerPutHandler >> storage [
 	^ storage
 ]
 
 { #category : #accessing }
-ERRecorderPutHandler >> storage: anObject [
+ERServerPutHandler >> storage: anObject [
 	storage := anObject
 ]
 
 { #category : #evaluating }
-ERRecorderPutHandler >> value: aZnRequest value: aZnResponse [
+ERServerPutHandler >> value: aZnRequest value: aZnResponse [
 	| badRequest key |
 	badRequest := [ ^ ZnResponse badRequest: aZnRequest ].
 	aZnRequest method = #GET	ifTrue: [ ^ ZnResponse ok: (ZnEntity text: 'OK') ].

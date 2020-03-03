@@ -60,7 +60,7 @@ ERRecorderPutHandlerTest >> setUp [
 ERRecorderPutHandlerTest >> setUpServer [
 	receivedContents := WaitfreeQueue new.
 	receiverSemaphore := Semaphore new.
-	handler := ERRecorderPutHandler new.
+	handler := ERServerPutHandler new.
 	handler storage: self.
 	delegate := ZnDispatcherDelegate new.
 	delegate map: '/gt/events' to: handler.

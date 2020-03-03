@@ -62,9 +62,9 @@ ERRecorderHelp class >> analysis [
 	
 	Remember that semantics of the data depends on you. Event Recorder only provides a convenient infrustructure to collect data.' 
 		format: {
-			#ERTool -> ERTool.
+			#ERAnalysisTool -> ERAnalysisTool.
 			#ERPacket -> ERPacket.
-			'url' -> ERRecorderServer defaultBaseUrl 
+			'url' -> ERServer defaultBaseUrl 
 		} asDictionary)
 ]
 
@@ -112,7 +112,7 @@ ERRecorderHelp class >> client [
 	format: {
 		#ERRecorder -> ERRecorder.
 		#ERCollector -> ERCollector.
-		#ERTool -> ERTool.
+		#ERAnalysisTool -> ERAnalysisTool.
 		#ERPacking -> ERPacking.
 		#ERPacket -> ERPacket.
 		} asDictionary)
@@ -162,7 +162,7 @@ ERRecorderHelp class >> server [
 	The following section describes the data storage and data analysis.
 	'
 	format: {
-		#ERRecorderServer -> ERRecorderServer.
-		#ERRecorderDelegate -> ERRecorderDelegate.
-		'url' -> ERRecorderServer defaultBaseUrl } asDictionary)
+		#ERServer -> ERServer.
+		#ERServerDelegate -> ERServerDelegate.
+		'url' -> ERServer defaultBaseUrl } asDictionary)
 ]

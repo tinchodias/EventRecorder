@@ -7,7 +7,7 @@ See value:value: method. This is an entry point to a corresponding HTTP request.
 I am used by GTEventRecorderDelegate.
 "
 Class {
-	#name : #ERRecorderZipHandler,
+	#name : #ERServerZipHandler,
 	#superclass : #Object,
 	#instVars : [
 		'fileDirectory',
@@ -18,32 +18,32 @@ Class {
 }
 
 { #category : #accessing }
-ERRecorderZipHandler >> archiver [
+ERServerZipHandler >> archiver [
 	"Return an object that is responsible for compressing files."
-	^ archiver ifNil: [ archiver := ERRecorderExternalZipScript new ]
+	^ archiver ifNil: [ archiver := ERServerExternalZipScript new ]
 ]
 
 { #category : #accessing }
-ERRecorderZipHandler >> archiver: anObject [
+ERServerZipHandler >> archiver: anObject [
 	"Set an object that is responsible for compressing files.
 	It should understand #compress: directory method that returns compressed filename."
 	^ archiver := anObject
 ]
 
 { #category : #accessing }
-ERRecorderZipHandler >> categoryUrlFor: aString [ 
+ERServerZipHandler >> categoryUrlFor: aString [ 
 	"Return a public URL for a given category ZIP file."
 	^ self zipBaseUrl / aString
 ]
 
 { #category : #private }
-ERRecorderZipHandler >> compress: aFileReference [ 
+ERServerZipHandler >> compress: aFileReference [ 
 	"Compress aFileReference directory and return ZIP file name."
 	^ self archiver compress: aFileReference
 ]
 
 { #category : #private }
-ERRecorderZipHandler >> compressCategory: aString request: aZnRequest response: aZnResponse [ 
+ERServerZipHandler >> compressCategory: aString request: aZnRequest response: aZnResponse [ 
 	| directory fileName url |
 	directory := self fileDirectory / aString.
 	directory exists ifFalse: [ 
@@ -61,19 +61,19 @@ ERRecorderZipHandler >> compressCategory: aString request: aZnRequest response: 
 ]
 
 { #category : #accessing }
-ERRecorderZipHandler >> fileDirectory [
+ERServerZipHandler >> fileDirectory [
 	"Return a FileReference object where unpacked data are stored."
 	^ fileDirectory
 ]
 
 { #category : #accessing }
-ERRecorderZipHandler >> fileDirectory: anObject [
+ERServerZipHandler >> fileDirectory: anObject [
 	"Set a FileReference object where unpacked data are stored."
 	fileDirectory := anObject asFileReference
 ]
 
 { #category : #private }
-ERRecorderZipHandler >> handleGetRequest: aZnRequest response: aZnResponse [ 
+ERServerZipHandler >> handleGetRequest: aZnRequest response: aZnResponse [ 
 	"Handle GET request. aZnRequest should have category value and 
 	we should compress a corresponding files and return a ZIP URL."
 	| category |
@@ -86,7 +86,7 @@ ERRecorderZipHandler >> handleGetRequest: aZnRequest response: aZnResponse [
 ]
 
 { #category : #evaluating }
-ERRecorderZipHandler >> value: aZnRequest value: aZnResponse [
+ERServerZipHandler >> value: aZnRequest value: aZnResponse [
 	"Process GET request. The other requests are invalid."
 	aZnRequest method = #GET ifTrue: [ ^ self handleGetRequest: aZnRequest response: aZnResponse ].
 	^ aZnResponse
@@ -96,14 +96,14 @@ ERRecorderZipHandler >> value: aZnRequest value: aZnResponse [
 ]
 
 { #category : #accessing }
-ERRecorderZipHandler >> zipBaseUrl [
+ERServerZipHandler >> zipBaseUrl [
 	"Return a ZnUrl object from which compressed ZIP files are available on the Internet."
 
 	^ zipBaseUrl
 ]
 
 { #category : #accessing }
-ERRecorderZipHandler >> zipBaseUrl: aZnUrl [
+ERServerZipHandler >> zipBaseUrl: aZnUrl [
 	"Set a ZnUrl object from which compressed ZIP files are available on the Internet."
 
 	zipBaseUrl := aZnUrl

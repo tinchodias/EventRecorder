@@ -10,7 +10,7 @@ Class {
 { #category : #tests }
 ERRecorderExternalZipScriptTest >> testSystem [
 	| result |
-	result := ERRecorderExternalZipScript new system: 'ls .'.
+	result := ERServerExternalZipScript new system: 'ls .'.
 	self assert: result isZero.
 ]
 
@@ -18,7 +18,7 @@ ERRecorderExternalZipScriptTest >> testSystem [
 ERRecorderExternalZipScriptTest >> testSystem2 [
 	"Calling a command incorrectly"
 	| result |
-	result := ERRecorderExternalZipScript new system: 'ls --non-existent-parameter'.
+	result := ERServerExternalZipScript new system: 'ls --non-existent-parameter'.
 	self deny: result isZero.
 ]
 
@@ -26,6 +26,6 @@ ERRecorderExternalZipScriptTest >> testSystem2 [
 ERRecorderExternalZipScriptTest >> testSystem3 [
 	"Calling a non existent command"
 	| result |
-	result := ERRecorderExternalZipScript new system: 'non-existent-command'.
+	result := ERServerExternalZipScript new system: 'non-existent-command'.
 	self deny: result isZero.
 ]

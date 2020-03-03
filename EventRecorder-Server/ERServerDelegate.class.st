@@ -1,5 +1,5 @@
 Class {
-	#name : #ERRecorderDelegate,
+	#name : #ERServerDelegate,
 	#superclass : #Object,
 	#instVars : [
 		'dispatcher',
@@ -11,29 +11,29 @@ Class {
 }
 
 { #category : #'instance creation' }
-ERRecorderDelegate class >> newWith: baseZnUrl [
+ERServerDelegate class >> newWith: baseZnUrl [
 	^ self basicNew
 		initializeWith: baseZnUrl;
 		yourself
 ]
 
 { #category : #accessing }
-ERRecorderDelegate >> baseUrl [
+ERServerDelegate >> baseUrl [
 	^ baseUrl
 ]
 
 { #category : #accessing }
-ERRecorderDelegate >> baseUrl: aZnUrl [
+ERServerDelegate >> baseUrl: aZnUrl [
 	baseUrl := aZnUrl
 ]
 
 { #category : #public }
-ERRecorderDelegate >> handleRequest: request [
+ERServerDelegate >> handleRequest: request [
 	^ dispatcher handleRequest: request
 ]
 
 { #category : #initialization }
-ERRecorderDelegate >> initializeDispatcher [
+ERServerDelegate >> initializeDispatcher [
 	| okResponse |
 	okResponse := [ :request :response | ZnResponse ok: (ZnEntity text: 'OK') ].
 	dispatcher 
@@ -48,34 +48,34 @@ ERRecorderDelegate >> initializeDispatcher [
 ]
 
 { #category : #initialization }
-ERRecorderDelegate >> initializeWith: baseZnUrl [
+ERServerDelegate >> initializeWith: baseZnUrl [
 	self initialize.
 	
 	self baseUrl: baseZnUrl.
 
-	putHandler := ERRecorderPutHandler new.
-	putHandler storage: (ERRecorderFileStorage new
+	putHandler := ERServerPutHandler new.
+	putHandler storage: (ERServerFileStorage new
 		directory: FileLocator home / 'gt' / 'events';
 		yourself).
 
-	zipHandler := ERRecorderZipHandler new.
+	zipHandler := ERServerZipHandler new.
 	zipHandler 
 		fileDirectory: FileLocator home / 'gt' / 'events';
 		zipBaseUrl: baseZnUrl;
-		archiver: ERRecorderExternalZipScript new.
+		archiver: ERServerExternalZipScript new.
 
 	dispatcher := ZnDispatcherDelegate new.
 	self initializeDispatcher
 ]
 
 { #category : #accessing }
-ERRecorderDelegate >> putHandler [
+ERServerDelegate >> putHandler [
 	"for the testing purpose"
 	^ putHandler
 ]
 
 { #category : #accessing }
-ERRecorderDelegate >> zipHandler [
+ERServerDelegate >> zipHandler [
 	"for the testing purpose"
 	^ zipHandler
 ]
