@@ -111,9 +111,9 @@ EREventRecorder >> enablePermissionToSend [
 ]
 
 { #category : #packing }
-EREventRecorder >> flush [
+EREventRecorder >> flushDiscardingEvents [
 	"Be careful! You will lost all data."
-	collectors do: #flush
+	collectors do: #flushDiscardingEvents
 ]
 
 { #category : #testing }
@@ -155,7 +155,7 @@ EREventRecorder >> numberOfDeliveryData [
 { #category : #packing }
 EREventRecorder >> pack [
 	| allCollectors consolidatedCollectors |
-	self hasPermissionToSend ifFalse: [ ^ self flush; yourself ].
+	self hasPermissionToSend ifFalse: [ ^ self flushDiscardingEvents; yourself ].
 	allCollectors := OrderedCollection new: collectors size.
 	collectors do: [ :eachCollector | allCollectors addLast: eachCollector ].
 	consolidatedCollectors := EREventConsolidate new collectors: allCollectors; consolidated.

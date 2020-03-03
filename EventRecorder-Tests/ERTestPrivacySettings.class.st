@@ -1,29 +1,29 @@
 Class {
-	#name : #TestPrivacySettings,
+	#name : #ERTestPrivacySettings,
 	#superclass : #Object,
 	#instVars : [
 		'hasPermissionToSend'
 	],
-	#category : #'EventRecorder-Server-Tests'
+	#category : #'EventRecorder-Tests-Support'
 }
 
 { #category : #accessing }
-TestPrivacySettings >> disablePermissionToSend [
+ERTestPrivacySettings >> disablePermissionToSend [
 	hasPermissionToSend := false
 ]
 
 { #category : #accessing }
-TestPrivacySettings >> enablePermissionToSend [
+ERTestPrivacySettings >> enablePermissionToSend [
 	hasPermissionToSend := true
 ]
 
 { #category : #testing }
-TestPrivacySettings >> hasPermissionToSend [
+ERTestPrivacySettings >> hasPermissionToSend [
 	^ hasPermissionToSend
 ]
 
 { #category : #initialization }
-TestPrivacySettings >> initialize [
+ERTestPrivacySettings >> initialize [
 	super initialize.
 	
 	hasPermissionToSend := true.

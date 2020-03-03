@@ -45,7 +45,7 @@ EREventRecorderTest >> setUp [
 	super setUp.
 	self setUpServer.
 	semaphore := Semaphore new.
-	recorder := EREventRecorder newWith: TestPrivacySettings new.
+	recorder := EREventRecorder newWith: ERTestPrivacySettings new.
 	recorder enablePermissionToSend; enableDeliveryPermission.
 	collector1 := EREventCollector new.
 	collector1 url: server url.

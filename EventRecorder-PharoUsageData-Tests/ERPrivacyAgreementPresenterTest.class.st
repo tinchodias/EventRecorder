@@ -8,7 +8,7 @@ Class {
 ERPrivacyAgreementPresenterTest >> testMessage [
 
 	| presenter privacy |
-	privacy := TestPrivacySettings new.
+	privacy := ERTestPrivacySettings new.
 	presenter := ERPharoUsageDataPrivacyAgreementPresenter on: privacy.
 	privacy enablePermissionToSend.
 	self assert: presenter privacyMessage equals: presenter sendingMessage.
@@ -21,6 +21,6 @@ ERPrivacyAgreementPresenterTest >> testMessage [
 ERPrivacyAgreementPresenterTest >> testOpenWindowAddsItToWindowCollection [
 	| presenter |
 	presenter := (ERPharoUsageDataPrivacyAgreementPresenter
-		on: TestPrivacySettings new) openWithSpec.
+		on: ERTestPrivacySettings new) openWithSpec.
 	presenter close
 ]

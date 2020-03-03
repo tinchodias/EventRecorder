@@ -61,11 +61,10 @@ EREventCollector >> add: anEvent [
 
 { #category : #adding }
 EREventCollector >> addIfAvailable: anEvent [
-	"It add event to a queue only if sending diagnostic and usage data is enabled."
+	"It add event to a queue only if sending data is enabled."
 
 	recorder hasPermissionToSend
-		ifFalse: [ ^ anEvent ].
-	self add: anEvent
+		ifTrue: [ self add: anEvent ]
 ]
 
 { #category : #conversion }
@@ -110,16 +109,16 @@ EREventCollector >> category: aString [
 { #category : #configuration }
 EREventCollector >> defaultCategory [
 	"Default category name. You can set your own by calling #category: or 
-	by overwriting this method if you have a spetialized subclass."
+	by overwriting this method if you have a specialized subclass."
 
 	^ #unknown
 ]
 
 { #category : #accessing }
-EREventCollector >> flush [
+EREventCollector >> flushDiscardingEvents [
 	"Be careful when using it. You will lost all data."
 
-	recordedEvents flush
+	recordedEvents flushDiscardingEvents
 ]
 
 { #category : #accessing }

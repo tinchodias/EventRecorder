@@ -194,7 +194,7 @@ EREventRecorderDelegateTest >> testHandlePutOfEventRecorder [
 	semaphore := Semaphore new.
 	server when: ZnConnectionAcceptedEvent do: [ :announcement | semaphore signal ].
 	server when: ZnServerConnectionClosedEvent do: [ :announcement | semaphore signal ].
-	recorder := EREventRecorder newWith: TestPrivacySettings new.
+	recorder := EREventRecorder newWith: ERTestPrivacySettings new.
 	recorder deliveryPreSuspendingAction: [ recorder deliveryPreSuspendingAction: []. semaphore signal ].
 	recorder enablePermissionToSend.
 	collector := EREventCollector new.
