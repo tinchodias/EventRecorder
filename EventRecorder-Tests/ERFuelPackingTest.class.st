@@ -1,6 +1,6 @@
 Class {
 	#name : #ERFuelPackingTest,
-	#superclass : #EREventPackingTest,
+	#superclass : #ERPackingTest,
 	#category : #'EventRecorder-Tests-Support'
 }
 
@@ -14,7 +14,7 @@ ERFuelPackingTest >> testMigration [
 	| oldClass oldObject |
 	oldClass := Object newAnonymousSubclass.
 	oldObject := oldClass new.
-	collector := EREventCollector new.
+	collector := ERCollector new.
 	collector add: oldObject.
 	bundle := collector asBundleWith: packing.
 	packet := packing unpack: bundle data.
@@ -26,7 +26,7 @@ ERFuelPackingTest >> testMigration2 [
 	| oldClass oldObject |
 	oldClass := Object newAnonymousSubclass.
 	oldObject := oldClass new.
-	collector := EREventCollector new.
+	collector := ERCollector new.
 	collector add: oldObject.
 	bundle := collector asBundleWith: packing.
 	packing addMigration: [ :aMaterializer |

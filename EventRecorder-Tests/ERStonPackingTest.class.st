@@ -1,6 +1,6 @@
 Class {
 	#name : #ERStonPackingTest,
-	#superclass : #EREventPackingTest,
+	#superclass : #ERPackingTest,
 	#category : #'EventRecorder-Tests-Support'
 }
 

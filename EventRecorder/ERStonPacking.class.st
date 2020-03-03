@@ -3,7 +3,7 @@ I serialize or materialize objects using STON framework. Create instance of me c
 "
 Class {
 	#name : #ERStonPacking,
-	#superclass : #EREventPacking,
+	#superclass : #ERPacking,
 	#category : #'EventRecorder-Support'
 }
 

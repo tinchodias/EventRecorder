@@ -113,7 +113,7 @@ ERDeliverer >> deliverNow [
 { #category : #delivery }
 ERDeliverer >> deliverSignallingProgress: aBoolean [
 	| bundles |
-	bundles := EREventMultiBundleFactory fromBundles: self bundles.
+	bundles := ERMultiBundleFactory fromBundles: self bundles.
 	bundles do: [ :eachEREventMultiBundle |
 		self deliver: eachEREventMultiBundle signalProgress: aBoolean ]
 ]

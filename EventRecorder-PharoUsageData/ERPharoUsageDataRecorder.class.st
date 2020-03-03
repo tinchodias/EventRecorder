@@ -1,6 +1,6 @@
 Class {
 	#name : #ERPharoUsageDataRecorder,
-	#superclass : #EREventRecorder,
+	#superclass : #ERRecorder,
 	#classInstVars : [
 		'uniqueInstance'
 	],

@@ -5,7 +5,7 @@ You can configure Fuel migration rules via #addMigration: or #migrations: method
 "
 Class {
 	#name : #ERFuelPacking,
-	#superclass : #EREventPacking,
+	#superclass : #ERPacking,
 	#instVars : [
 		'migrationBlocks'
 	],
