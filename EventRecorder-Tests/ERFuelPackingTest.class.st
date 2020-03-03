@@ -1,7 +1,7 @@
 Class {
 	#name : #ERFuelPackingTest,
 	#superclass : #EREventPackingTest,
-	#category : #'EventRecorder-Fuel-Tests'
+	#category : #'EventRecorder-Tests-Support'
 }
 
 { #category : #accessing }

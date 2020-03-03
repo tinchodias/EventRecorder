@@ -24,6 +24,11 @@ EREventPacking class >> default [
 ]
 
 { #category : #'instance creation' }
+EREventPacking class >> fuel [
+	^ ERFuelPacking new
+]
+
+{ #category : #'instance creation' }
 EREventPacking class >> ston [
 	^ ERStonPacking new
 ]
