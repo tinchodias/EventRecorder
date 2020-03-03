@@ -30,7 +30,7 @@ Class {
 	#instVars : [
 		'packings'
 	],
-	#category : #'EventRecorder-Support'
+	#category : #'EventRecorder-Server'
 }
 
 { #category : #'instance creation' }
