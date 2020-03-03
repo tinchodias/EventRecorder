@@ -1,11 +1,13 @@
 "
-I serialize or materialize objects using FUEL framework. Create instance of me calling GTEventPacking fuel.
+I serialize or materialize objects using Fuel library. Obtain an instance of me calling EREventPacking fuel. 
+
+You can configure Fuel migration rules via #addMigration: or #migrations: methods.
 "
 Class {
 	#name : #ERFuelPacking,
 	#superclass : #EREventPacking,
 	#instVars : [
-		'migrations'
+		'migrationBlocks'
 	],
 	#category : #'EventRecorder-Support'
 }
@@ -18,15 +20,6 @@ ERFuelPacking >> addMigration: oneArgBlock [
 { #category : #initialization }
 ERFuelPacking >> initializeMaterializer: aFLMaterializer [ 
 	self migrations do: [ :eachMigration | eachMigration value: aFLMaterializer ]
-]
-
-{ #category : #initialization }
-ERFuelPacking >> initializeMigrations [
-	| pragmas |
-	pragmas := Pragma allNamed: #fuelMaterializerMigration in: self class.
-	migrations := pragmas
-		collect: [ :eachPragma | self perform: eachPragma methodSelector ]
-		as: OrderedCollection
 ]
 
 { #category : #private }
@@ -44,13 +37,12 @@ ERFuelPacking >> materialize: aByteArray [
 
 { #category : #accessing }
 ERFuelPacking >> migrations [
-	migrations ifNil: [ self initializeMigrations ].
-	^ migrations
+	^ migrationBlocks ifNil: [ migrationBlocks := OrderedCollection new ]
 ]
 
 { #category : #accessing }
-ERFuelPacking >> migrations: aCollectionOrNil [
-	migrations := aCollectionOrNil
+ERFuelPacking >> migrations: aCollectionOfOneArgumentBlocks [
+	migrationBlocks := aCollectionOfOneArgumentBlocks
 ]
 
 { #category : #private }
