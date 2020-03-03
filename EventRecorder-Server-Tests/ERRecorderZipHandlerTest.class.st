@@ -17,11 +17,11 @@ ERRecorderZipHandlerTest >> setUp [
 	fileSystem := FileSystem memory.
 	handler := ERRecorderZipHandler new.
 	handler fileDirectory: fileSystem workingDirectory / 'files'.
-	handler zipRootUrl: 'http://localhost/gt/zip/' asZnUrl.
+	handler zipBaseUrl: 'http://localhost/gt/zip/' asZnUrl.
 ]
 
 { #category : #initialization }
 ERRecorderZipHandlerTest >> testZipUrl [
-	self assert: handler zipRootUrl notNil.
-	self assert: handler zipRootUrl asString equals: 'http://localhost/gt/zip/'
+	self assert: handler zipBaseUrl notNil.
+	self assert: handler zipBaseUrl asString equals: 'http://localhost/gt/zip/'
 ]

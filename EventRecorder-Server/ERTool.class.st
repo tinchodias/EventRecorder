@@ -34,11 +34,6 @@ ERTool class >> default [
 	^ self new
 ]
 
-{ #category : #private }
-ERTool class >> defaultBaseUrl [
-	^ 'http://gc.dcc.uchile.cl/' asZnUrl
-]
-
 { #category : #configuration }
 ERTool >> defaultDownloadDirectory [
 	^ FileSystem disk workingDirectory
@@ -56,7 +51,7 @@ ERTool >> defaultEventsDirectory [
 
 { #category : #private }
 ERTool >> defaultEventsZipUrl [
-	^ self class defaultBaseUrl / 'gt-events.zip'
+	^ ERRecorderServer defaultBaseUrl / 'gt-events.zip'
 ]
 
 { #category : #api }

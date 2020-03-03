@@ -9,16 +9,28 @@ Class {
 }
 
 { #category : #accessing }
-ERRecorderServer class >> start [
-	"self start"
-	(ZnServer startDefaultOn: 8080)
-		route: 'Default GT-EventRecorder-Server';
-		delegate: ERRecorderDelegate new.
+ERRecorderServer class >> defaultBaseUrl [
+	^ 'http://gc.dcc.uchile.cl:8080/' asZnUrl
 ]
 
-{ #category : #accessing }
+{ #category : #'starting/stopping' }
+ERRecorderServer class >> start [
+	"self start"
+
+	^ self startOn: self defaultBaseUrl
+]
+
+{ #category : #'starting/stopping' }
+ERRecorderServer class >> startOn: baseZnUrl [
+	^ (ZnServer startDefaultOn: baseZnUrl port)
+		route: 'Default GT-EventRecorder-Server';
+		delegate: (ERRecorderDelegate newWith: baseZnUrl)
+]
+
+{ #category : #'starting/stopping' }
 ERRecorderServer class >> stop [
 	"self stop"
+
 	ZnServer stopDefault
 ]
 

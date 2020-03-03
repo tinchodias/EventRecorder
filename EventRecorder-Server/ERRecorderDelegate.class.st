@@ -4,30 +4,32 @@ Class {
 	#instVars : [
 		'dispatcher',
 		'putHandler',
-		'zipHandler'
+		'zipHandler',
+		'baseUrl'
 	],
 	#category : #'EventRecorder-Server'
 }
 
+{ #category : #'instance creation' }
+ERRecorderDelegate class >> newWith: baseZnUrl [
+	^ self basicNew
+		initializeWith: baseZnUrl;
+		yourself
+]
+
+{ #category : #accessing }
+ERRecorderDelegate >> baseUrl [
+	^ baseUrl
+]
+
+{ #category : #accessing }
+ERRecorderDelegate >> baseUrl: aZnUrl [
+	baseUrl := aZnUrl
+]
+
 { #category : #public }
 ERRecorderDelegate >> handleRequest: request [
 	^ dispatcher handleRequest: request
-]
-
-{ #category : #initialization }
-ERRecorderDelegate >> initialize [
-	super initialize.
-	putHandler := ERRecorderPutHandler new.
-	putHandler storage: (ERRecorderFileStorage new
-		directory: FileLocator home / 'gt' / 'events';
-		yourself).
-	zipHandler := ERRecorderZipHandler new.
-	zipHandler 
-		fileDirectory: FileLocator home / 'gt' / 'events';
-		zipRootUrl: 'http://gc.dcc.uchile.cl/' asZnUrl;
-		archiver: ERRecorderExternalZipScript new.
-	dispatcher := ZnDispatcherDelegate new.
-	self initializeDispatcher
 ]
 
 { #category : #initialization }
@@ -43,6 +45,27 @@ ERRecorderDelegate >> initializeDispatcher [
 		map: '/gt/events' to: putHandler;
 		map: '/gt/events/' to: putHandler;
 		yourself
+]
+
+{ #category : #initialization }
+ERRecorderDelegate >> initializeWith: baseZnUrl [
+	self initialize.
+	
+	self baseUrl: baseZnUrl.
+
+	putHandler := ERRecorderPutHandler new.
+	putHandler storage: (ERRecorderFileStorage new
+		directory: FileLocator home / 'gt' / 'events';
+		yourself).
+
+	zipHandler := ERRecorderZipHandler new.
+	zipHandler 
+		fileDirectory: FileLocator home / 'gt' / 'events';
+		zipBaseUrl: baseZnUrl;
+		archiver: ERRecorderExternalZipScript new.
+
+	dispatcher := ZnDispatcherDelegate new.
+	self initializeDispatcher
 ]
 
 { #category : #accessing }

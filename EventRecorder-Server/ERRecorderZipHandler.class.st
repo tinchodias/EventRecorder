@@ -11,8 +11,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'fileDirectory',
-		'zipRootUrl',
-		'archiver'
+		'archiver',
+		'zipBaseUrl'
 	],
 	#category : #'EventRecorder-Server'
 }
@@ -33,7 +33,7 @@ ERRecorderZipHandler >> archiver: anObject [
 { #category : #accessing }
 ERRecorderZipHandler >> categoryUrlFor: aString [ 
 	"Return a public URL for a given category ZIP file."
-	^ self zipRootUrl / aString
+	^ self zipBaseUrl / aString
 ]
 
 { #category : #private }
@@ -96,13 +96,15 @@ ERRecorderZipHandler >> value: aZnRequest value: aZnResponse [
 ]
 
 { #category : #accessing }
-ERRecorderZipHandler >> zipRootUrl [
+ERRecorderZipHandler >> zipBaseUrl [
 	"Return a ZnUrl object from which compressed ZIP files are available on the Internet."
-	^ zipRootUrl
+
+	^ zipBaseUrl
 ]
 
 { #category : #accessing }
-ERRecorderZipHandler >> zipRootUrl: anObject [
+ERRecorderZipHandler >> zipBaseUrl: aZnUrl [
 	"Set a ZnUrl object from which compressed ZIP files are available on the Internet."
-	zipRootUrl := anObject asZnUrl
+
+	zipBaseUrl := aZnUrl
 ]

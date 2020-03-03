@@ -30,14 +30,16 @@ ERRecorderDelegateTest >> compress: aFileReference [
 
 { #category : #running }
 ERRecorderDelegateTest >> setUp [
+	| baseUrl |
 	super setUp.
 	serverSemaphore := Semaphore new.
 	fileSystem := FileSystem memory.
-	delegate := ERRecorderDelegate new.
+	baseUrl := 'http://localhost/gt/zip' asZnUrl.
+	delegate := ERRecorderDelegate newWith: baseUrl.
 	delegate putHandler directory: fileSystem workingDirectory / 'files'.
 	delegate zipHandler 
 		fileDirectory: fileSystem workingDirectory / 'files';
-		zipRootUrl: 'http://localhost/gt/zip' asZnUrl;
+		zipBaseUrl: baseUrl;
 		archiver: self.
 	server := ERRecorderTestServer new.
 	server initializeUsingDelegate: delegate semaphore: serverSemaphore.

@@ -64,7 +64,7 @@ ERRecorderHelp class >> analysis [
 		format: {
 			#ERTool -> ERTool.
 			#ERPacket -> ERPacket.
-			'url' -> ERTool defaultBaseUrl 
+			'url' -> ERRecorderServer defaultBaseUrl 
 		} asDictionary)
 ]
 
@@ -164,5 +164,5 @@ ERRecorderHelp class >> server [
 	format: {
 		#ERRecorderServer -> ERRecorderServer.
 		#ERRecorderDelegate -> ERRecorderDelegate.
-		'url' -> ERTool defaultBaseUrl } asDictionary)
+		'url' -> ERRecorderServer defaultBaseUrl } asDictionary)
 ]
