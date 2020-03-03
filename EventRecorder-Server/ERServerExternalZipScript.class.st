@@ -6,7 +6,7 @@ I use a Bash script, ZIP and some other Linux commands.
 Class {
 	#name : #ERServerExternalZipScript,
 	#superclass : #Object,
-	#category : #'EventRecorder-Server'
+	#category : #'EventRecorder-Server-Support'
 }
 
 { #category : #public }

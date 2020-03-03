@@ -20,7 +20,7 @@ ERUnpackingTest >> setUp [
 	initialData := #('GT' 'Team' 2015).
 	collector := ERCollector new.
 	initialData do: [ :each | collector add: each ].
-	unpacking := ERUnpacking default.
+	unpacking := ERUnpacker default.
 ]
 
 { #category : #tests }
@@ -39,14 +39,14 @@ ERUnpackingTest >> testUnpack2 [
 { #category : #tests }
 ERUnpackingTest >> testUnpack3 [
 	bundle := collector asBundleWith: ERPacking default.
-	unpacking := ERUnpacking new.
+	unpacking := ERUnpacker new.
 	self should: [ unpacking unpack: bundle data ] raise: ERInitializationError
 ]
 
 { #category : #tests }
 ERUnpackingTest >> testUnpack4 [
 	bundle := collector asBundleWith: ERPacking ston.
-	unpacking := ERUnpacking new.
+	unpacking := ERUnpacker new.
 	unpacking addPacking: ERPacking fuel.
 	self should: [ unpacking unpack: bundle data ] raise: ERUnpackingError 
 ]
@@ -54,7 +54,7 @@ ERUnpackingTest >> testUnpack4 [
 { #category : #tests }
 ERUnpackingTest >> testUnpack5 [
 	bundle := collector asBundleWith: ERPacking fuel.
-	unpacking := ERUnpacking new.
+	unpacking := ERUnpacker new.
 	unpacking addPacking: ERPacking ston.
 	self should: [ unpacking unpack: bundle data ] raise: ERUnpackingError 
 ]

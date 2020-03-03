@@ -5,7 +5,7 @@ Check my two start and stop methods on the class side.
 Class {
 	#name : #ERServer,
 	#superclass : #Object,
-	#category : #'EventRecorder-Server'
+	#category : #'EventRecorder-Server-Core'
 }
 
 { #category : #accessing }

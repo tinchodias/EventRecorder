@@ -14,7 +14,7 @@ Class {
 		'archiver',
 		'zipBaseUrl'
 	],
-	#category : #'EventRecorder-Server'
+	#category : #'EventRecorder-Server-Core'
 }
 
 { #category : #accessing }

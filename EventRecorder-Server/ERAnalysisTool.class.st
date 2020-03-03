@@ -26,7 +26,7 @@ openSettingsBrowser
 Class {
 	#name : #ERAnalysisTool,
 	#superclass : #Object,
-	#category : #'EventRecorder-Server'
+	#category : #'EventRecorder-Server-Analysis'
 }
 
 { #category : #accessing }
@@ -114,7 +114,7 @@ ERAnalysisTool >> printHumanReadableSize: aTotalNumber [
 ERAnalysisTool >> unpackAll [
 	"self default unpackAll inspect"
 	self ensureLocalDirectory.
-	^ ERUnpacking default safeUnpackDirectory: self defaultEventsDirectory.
+	^ ERUnpacker default safeUnpackDirectory: self defaultEventsDirectory.
 ]
 
 { #category : #api }
@@ -123,5 +123,5 @@ ERAnalysisTool >> unpackAll: aFileReference [
 	self default unpackAll: './gt/events/roassal2Examples' asFileReference.
 	" 
 	self ensureLocalDirectory.
-	^ ERUnpacking default safeUnpackDirectory: aFileReference.
+	^ ERUnpacker default safeUnpackDirectory: aFileReference.
 ]

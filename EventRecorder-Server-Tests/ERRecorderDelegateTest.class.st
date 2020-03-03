@@ -213,7 +213,7 @@ ERRecorderDelegateTest >> testHandlePutOfEventRecorder [
 		self deny: (semaphore waitTimeoutMSecs: 200) ] ensure: [ recorder deactivateDelivery ].
 	files := (fileSystem workingDirectory / 'files' / 'testingCategory') allFiles.
 	self assert: files size equals: 1.
-	contents := ERUnpacking default unpackFile: files first.
+	contents := ERUnpacker default unpackFile: files first.
 	self assert: (contents isKindOf: ERPacket).
 	unpackedData := contents unpackedData.
 	self assert: unpackedData isCollection.

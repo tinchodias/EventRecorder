@@ -25,16 +25,16 @@ Internal Representation and Key Implementation Points.
 
 "
 Class {
-	#name : #ERUnpacking,
+	#name : #ERUnpacker,
 	#superclass : #Object,
 	#instVars : [
 		'packings'
 	],
-	#category : #'EventRecorder-Server'
+	#category : #'EventRecorder-Server-Support'
 }
 
 { #category : #'instance creation' }
-ERUnpacking class >> default [
+ERUnpacker class >> default [
 	^ self new
 			addPacking: ERPacking fuel;
 			addPacking: ERPacking ston;
@@ -42,17 +42,17 @@ ERUnpacking class >> default [
 ]
 
 { #category : #adding }
-ERUnpacking >> addPacking: aEREventPacking [ 
+ERUnpacker >> addPacking: aEREventPacking [ 
 	^ self packings addLast: aEREventPacking
 ]
 
 { #category : #accessing }
-ERUnpacking >> packings [
+ERUnpacker >> packings [
 	^ packings ifNil: [ packings := OrderedCollection new ]
 ]
 
 { #category : #packing }
-ERUnpacking >> safeUnpackDirectory: aFileReference [
+ERUnpacker >> safeUnpackDirectory: aFileReference [
 	"self default safeUnpackDirectory: './gt/events/' asFileReference"
 	| unpackedData exceptions |
 	exceptions := OrderedCollection new.
@@ -63,7 +63,7 @@ ERUnpacking >> safeUnpackDirectory: aFileReference [
 ]
 
 { #category : #packing }
-ERUnpacking >> unpack: aByteArray [
+ERUnpacker >> unpack: aByteArray [
 	| errors |
 	errors := OrderedCollection new: self packings size.
 	self packings do: [ :eachEventPacking | 
@@ -81,7 +81,7 @@ ERUnpacking >> unpack: aByteArray [
 ]
 
 { #category : #packing }
-ERUnpacking >> unpackDirectory: aFileReference [
+ERUnpacker >> unpackDirectory: aFileReference [
 	"self default unpackDirectory: './gt/events/' asFileReference"
 	^ aFileReference asFileReference allFiles 
 			collect: [ :eachFile | 
@@ -92,7 +92,7 @@ ERUnpacking >> unpackDirectory: aFileReference [
 ]
 
 { #category : #packing }
-ERUnpacking >> unpackFile: aFileReference [
+ERUnpacker >> unpackFile: aFileReference [
 	"self default unpackFile: './gt/events/' asFileReference allFiles atRandom"
 
 	^ [ self

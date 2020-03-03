@@ -7,7 +7,7 @@ Class {
 		'zipHandler',
 		'baseUrl'
 	],
-	#category : #'EventRecorder-Server'
+	#category : #'EventRecorder-Server-Core'
 }
 
 { #category : #'instance creation' }
