@@ -22,6 +22,15 @@ ERFuelPacking >> initializeMaterializer: aFLMaterializer [
 	self migrations do: [ :eachMigration | eachMigration value: aFLMaterializer ]
 ]
 
+{ #category : #initialization }
+ERFuelPacking >> initializeMigrations [
+	| pragmas |
+	pragmas := Pragma allNamed: #fuelMaterializerMigration in: self class.
+	migrations := pragmas
+		collect: [ :eachPragma | self perform: eachPragma methodSelector ]
+		as: OrderedCollection
+]
+
 { #category : #private }
 ERFuelPacking >> materialize: aByteArray [
 	| materializer stream gzstream materialization |

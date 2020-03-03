@@ -13,7 +13,7 @@ Public API and Key Messages
 - #deliveryCycle implements  the main logic of the delivery process
 "
 Class {
-	#name : #EREventDelivery,
+	#name : #ERDeliverer,
 	#superclass : #Object,
 	#instVars : [
 		'mutex',
@@ -29,7 +29,7 @@ Class {
 }
 
 { #category : #activation }
-EREventDelivery >> activate [
+ERDeliverer >> activate [
 	"Initialize a delivery process."
 	^ mutex critical: [ 
 			self enablePermission.
@@ -38,22 +38,22 @@ EREventDelivery >> activate [
 ]
 
 { #category : #adding }
-EREventDelivery >> add: aEREventBundle [
+ERDeliverer >> add: aEREventBundle [
 	queue nextPut: aEREventBundle
 ]
 
 { #category : #announce }
-EREventDelivery >> announceSuspendingDelivery [
+ERDeliverer >> announceSuspendingDelivery [
 	preSuspendingAction ifNotNil: #value
 ]
 
 { #category : #accessing }
-EREventDelivery >> announcer [
+ERDeliverer >> announcer [
 	^ self recorder ifNotNil: #announcer
 ]
 
 { #category : #delivery }
-EREventDelivery >> bundles [
+ERDeliverer >> bundles [
 	"Be careful about using this method. You will loose data if you call it externally."
 
 	| eventBundles |
@@ -64,7 +64,7 @@ EREventDelivery >> bundles [
 ]
 
 { #category : #deactivation }
-EREventDelivery >> deactivate [
+ERDeliverer >> deactivate [
 	^ mutex critical: [ | oldProcess |
 		self disablePermission.
 		delay ifNotNil: [ :aDelay | aDelay delaySemaphore signal ].
@@ -74,20 +74,12 @@ EREventDelivery >> deactivate [
 ]
 
 { #category : #accessing }
-EREventDelivery >> defaultDeliveryLapse [
+ERDeliverer >> defaultDeliveryLapse [
 	^ 20 minutes
 ]
 
 { #category : #delivery }
-EREventDelivery >> deliver: aBoolean [
-	| bundles |
-	bundles := EREventMultiBundleFactory fromBundles: self bundles.
-	bundles do: [ :eachEREventMultiBundle |
-		self deliver: eachEREventMultiBundle signalProgress: aBoolean ]
-]
-
-{ #category : #delivery }
-EREventDelivery >> deliver: aEREventBundle signalProgress: aBoolean [
+ERDeliverer >> deliver: aEREventBundle signalProgress: aBoolean [
 	^ (ZnClient new
 			beOneShot;
 			timeout: 5;
@@ -102,41 +94,56 @@ EREventDelivery >> deliver: aEREventBundle signalProgress: aBoolean [
 ]
 
 { #category : #accessing }
-EREventDelivery >> deliverLapse [
+ERDeliverer >> deliverLapse [
 	^ deliverLapse ifNil: [ deliverLapse := self defaultDeliveryLapse ]
 ]
 
 { #category : #accessing }
-EREventDelivery >> deliverLapse: aDuration [
+ERDeliverer >> deliverLapse: aDuration [
 	deliverLapse := aDuration
 ]
 
+{ #category : #delivery }
+ERDeliverer >> deliverNow [
+	delay ifNotNil: [ :aDelay |
+		aDelay delaySemaphore signal.
+		aDelay unschedule ]
+]
+
+{ #category : #delivery }
+ERDeliverer >> deliverSignallingProgress: aBoolean [
+	| bundles |
+	bundles := EREventMultiBundleFactory fromBundles: self bundles.
+	bundles do: [ :eachEREventMultiBundle |
+		self deliver: eachEREventMultiBundle signalProgress: aBoolean ]
+]
+
 { #category : #initialization }
-EREventDelivery >> deliveryCycle [
+ERDeliverer >> deliveryCycle [
 	delay := self deliverLapse asDelay.
 	self announceSuspendingDelivery.
 	delay wait.
 	delay := nil.
-	self hasPermission ifTrue: [ self packAndDeliver: false ]
+	self hasPermission ifTrue: [ self packAndDeliverSignallingProgress: false ]
 ]
 
 { #category : #deactivation }
-EREventDelivery >> disablePermission [
+ERDeliverer >> disablePermission [
 	mutex critical: [ permission := false ]
 ]
 
 { #category : #activation }
-EREventDelivery >> enablePermission [
+ERDeliverer >> enablePermission [
 	mutex critical: [ permission := true ]
 ]
 
 { #category : #testing }
-EREventDelivery >> hasPermission [
+ERDeliverer >> hasPermission [
 	^ permission
 ]
 
 { #category : #initialization }
-EREventDelivery >> initialize [
+ERDeliverer >> initialize [
 	super initialize.
 	mutex := Mutex new.
 	queue := WaitfreeQueue new.
@@ -144,19 +151,19 @@ EREventDelivery >> initialize [
 ]
 
 { #category : #initialization }
-EREventDelivery >> initializeProcess [
+ERDeliverer >> initializeProcess [
 	process := [ [ self hasPermission ] whileTrue: [ self deliveryCycle ] ]
 		forkAt: Processor userBackgroundPriority
 		named: self printProcessName
 ]
 
 { #category : #testing }
-EREventDelivery >> isActive [
+ERDeliverer >> isActive [
 	^ self isInactive not
 ]
 
 { #category : #testing }
-EREventDelivery >> isInactive [
+ERDeliverer >> isInactive [
 	^ mutex critical: [ 
 		process isNil or: [
 			process isTerminated or: [
@@ -164,25 +171,19 @@ EREventDelivery >> isInactive [
 ]
 
 { #category : #delivery }
-EREventDelivery >> now [
-	"for testing purpose"
-	delay ifNotNil: [ :aDelay | aDelay delaySemaphore signal. aDelay unschedule. ]
-]
-
-{ #category : #delivery }
-EREventDelivery >> packAndDeliver: aBoolean [
+ERDeliverer >> packAndDeliverSignallingProgress: aBoolean [
 	recorder pack.
-	self deliver: aBoolean.
+	self deliverSignallingProgress: aBoolean.
 	
 ]
 
 { #category : #initialization }
-EREventDelivery >> preSuspendingAction: aBlockClosure [ 
+ERDeliverer >> preSuspendingAction: aBlockClosure [ 
 	preSuspendingAction := aBlockClosure
 ]
 
 { #category : #printing }
-EREventDelivery >> printOn: aStream [
+ERDeliverer >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		space;
@@ -206,29 +207,29 @@ EREventDelivery >> printOn: aStream [
 ]
 
 { #category : #printing }
-EREventDelivery >> printProcessName [
+ERDeliverer >> printProcessName [
 	^ String streamContents: [ :aStream |
 		self printProcessNameOn: aStream ]
 ]
 
 { #category : #printing }
-EREventDelivery >> printProcessNameOn: aStream [
+ERDeliverer >> printProcessNameOn: aStream [
 	aStream
 		nextPutAll: self className;
 		nextPutAll: ' a delivery process'
 ]
 
 { #category : #accessing }
-EREventDelivery >> recorder [
+ERDeliverer >> recorder [
 	^ recorder
 ]
 
 { #category : #accessing }
-EREventDelivery >> recorder: anObject [
+ERDeliverer >> recorder: anObject [
 	recorder := anObject
 ]
 
 { #category : #accessing }
-EREventDelivery >> size [
+ERDeliverer >> size [
 	^ queue size
 ]

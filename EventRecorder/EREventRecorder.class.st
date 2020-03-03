@@ -27,10 +27,10 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'collectors',
-		'delivery',
 		'packing',
 		'announcer',
-		'settings'
+		'settings',
+		'deliverer'
 	],
 	#category : #'EventRecorder-Core'
 }
@@ -46,7 +46,7 @@ EREventRecorder class >> newWith: aRecorderSettings [
 
 { #category : #delivery }
 EREventRecorder >> activateDelivery [
-	^ delivery activate
+	^ deliverer activate
 ]
 
 { #category : #delivery }
@@ -69,18 +69,18 @@ EREventRecorder >> announcer [
 
 { #category : #delivery }
 EREventRecorder >> deactivateDelivery [
-	^ delivery deactivate
+	^ deliverer deactivate
 ]
 
 { #category : #delivery }
 EREventRecorder >> deliverNow [
-	delivery now
+	deliverer deliverNow
 ]
 
 { #category : #accessing }
 EREventRecorder >> delivery [
 	"Testing purpose."
-	^ delivery
+	^ deliverer
 ]
 
 { #category : #configuration }
@@ -90,7 +90,7 @@ EREventRecorder >> deliveryPreSuspendingAction: aBlockClosure [
 
 { #category : #configuration }
 EREventRecorder >> disableDeliveryPermission [
-	delivery disablePermission
+	deliverer disablePermission
 ]
 
 { #category : #configuration }
@@ -101,7 +101,7 @@ EREventRecorder >> disablePermissionToSend [
 
 { #category : #configuration }
 EREventRecorder >> enableDeliveryPermission [
-	delivery enablePermission
+	deliverer enablePermission
 ]
 
 { #category : #configuration }
@@ -128,18 +128,18 @@ EREventRecorder >> initializeWith: aRecorderSettings [
 	collectors := EREventCollectors new.
 	packing := EREventPacking default.
 
-	delivery := EREventDelivery new.
-	delivery recorder: self.
+	deliverer := ERDeliverer new.
+	deliverer recorder: self.
 
 	settings := aRecorderSettings.
 	settings hasPermissionToSend
-		ifTrue: [ delivery enablePermission ]
-		ifFalse: [ delivery disablePermission ]
+		ifTrue: [ deliverer enablePermission ]
+		ifFalse: [ deliverer disablePermission ]
 ]
 
 { #category : #testing }
 EREventRecorder >> isDeliveryActive [
-	^ delivery isActive
+	^ deliverer isActive
 ]
 
 { #category : #convenient }
@@ -149,7 +149,7 @@ EREventRecorder >> numberOfCollectors [
 
 { #category : #convenient }
 EREventRecorder >> numberOfDeliveryData [
-	^ delivery size
+	^ deliverer size
 ]
 
 { #category : #packing }
@@ -162,7 +162,7 @@ EREventRecorder >> pack [
 	consolidatedCollectors do: [ :eachCollector | | bundle |
 		eachCollector isEmpty ifFalse: [
 			bundle := eachCollector asBundleWith: packing.
-			delivery add: bundle] ].
+			deliverer add: bundle] ].
 	self removeLiberatedCollectors.
 ]
 
