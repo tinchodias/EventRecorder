@@ -1,7 +1,7 @@
-Extension { #name : #EREventAnnouncement }
+Extension { #name : #EREventPacket }
 
 { #category : #'*EventRecorder-Inspector' }
-EREventAnnouncement >> gtInspectorActionUnpackData [
+EREventPacket >> gtInspectorActionUnpackData [
 	<gtInspectorAction>
 	^ GLMGenericAction new
 		action: [ :composite |
@@ -12,12 +12,12 @@ EREventAnnouncement >> gtInspectorActionUnpackData [
 ]
 
 { #category : #'*EventRecorder-Inspector' }
-EREventAnnouncement >> gtInspectorItems [
+EREventPacket >> gtInspectorItems [
 	^ OrderedCollection withAll: self associations
 ]
 
 { #category : #'*EventRecorder-Inspector' }
-EREventAnnouncement >> gtInspectorItemsIn: composite [
+EREventPacket >> gtInspectorItemsIn: composite [
 	<gtInspectorPresentationOrder: -1>  
 	^ (composite table)
 		title: 'Info';

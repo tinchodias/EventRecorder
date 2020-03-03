@@ -20,8 +20,8 @@ Internal Representation and Key Implementation Points.
 
 "
 Class {
-	#name : #EREventAnnouncement,
-	#superclass : #Announcement,
+	#name : #EREventPacket,
+	#superclass : #Object,
 	#instVars : [
 		'dictionary'
 	],
@@ -29,7 +29,7 @@ Class {
 }
 
 { #category : #examples }
-EREventAnnouncement class >> exampleAnnouncement [
+EREventPacket class >> exampleAnnouncement [
 	<sampleInstance>
 	^ self new
 			data: #[ 1 2 3 4 ];
@@ -41,163 +41,157 @@ EREventAnnouncement class >> exampleAnnouncement [
 			yourself
 ]
 
-{ #category : #examples }
-EREventAnnouncement class >> exampleEmptyAnnouncement [
-	<sampleInstance>
-	^ self new
-]
-
 { #category : #converting }
-EREventAnnouncement >> associations [
+EREventPacket >> associations [
 	^ dictionary 
 			ifNil: [ #() ]
 			ifNotNil: [ dictionary associations ]
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> at: key [
+EREventPacket >> at: key [
 	^ self dictionary at: key ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> at: key put: value [
+EREventPacket >> at: key put: value [
 	^ self dictionary at: key put: value
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> category [
+EREventPacket >> category [
 	^ self at: #category
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> category: aSymbol [
+EREventPacket >> category: aSymbol [
 	^ self at: #category put: aSymbol
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> computerUUID [
+EREventPacket >> computerUUID [
 	^ self at: #computerUUID
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> computerUUID: anObject [
+EREventPacket >> computerUUID: anObject [
 	self at: #computerUUID put: anObject
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> data [
+EREventPacket >> data [
 	^ self at: #data
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> data: aByteArray [ 
+EREventPacket >> data: aByteArray [ 
 	self at: #data put: aByteArray
 ]
 
 { #category : #'accessing - private' }
-EREventAnnouncement >> dictionary [
+EREventPacket >> dictionary [
 	^ dictionary ifNil: [ dictionary := Dictionary new ]
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> eventRecorderVersion [
+EREventPacket >> eventRecorderVersion [
 	^ self at: #eventRecorderVersion
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> eventRecorderVersion: anObject [
+EREventPacket >> eventRecorderVersion: anObject [
 	self at: #eventRecorderVersion put: anObject
 ]
 
 { #category : #'accessing - unpacking' }
-EREventAnnouncement >> events [
+EREventPacket >> events [
 	^ self unpackedData
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> imageHash [
+EREventPacket >> imageHash [
 	^ self at: #imageHash
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> imageHash: anObject [
+EREventPacket >> imageHash: anObject [
 	self at: #imageHash put: anObject
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> imageVersion [
+EREventPacket >> imageVersion [
 	^ self at: #imageVersion
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> imageVersion: anObject [
+EREventPacket >> imageVersion: anObject [
 	self at: #imageVersion put: anObject
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> latestUpdate [
+EREventPacket >> latestUpdate [
 	^ self at: #latestUpdate
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> latestUpdate: anObject [
+EREventPacket >> latestUpdate: anObject [
 	self at: #latestUpdate put: anObject
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> migrationRules [
+EREventPacket >> migrationRules [
 	^ self at: #migrationRules
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> migrationRules: aCollectionOrNil [
+EREventPacket >> migrationRules: aCollectionOrNil [
 	self at: #migrationRules put: aCollectionOrNil
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> serializedBy [
+EREventPacket >> serializedBy [
 	^ self dictionary at: #serializedBy ifAbsent: [ EREventPacking default class name ]
 	
 
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> serializedBy: anObject [
+EREventPacket >> serializedBy: anObject [
 	self at: #serializedBy put: anObject
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> sessionCreationTime [
+EREventPacket >> sessionCreationTime [
 	^ self at: #sessionCreationTime
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> sessionCreationTime: anObject [
+EREventPacket >> sessionCreationTime: anObject [
 	self at: #sessionCreationTime put: anObject
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> sessionUUID [
+EREventPacket >> sessionUUID [
 	^ self at: #sessionUUID
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> sessionUUID: anObject [
+EREventPacket >> sessionUUID: anObject [
 	self at: #sessionUUID put: anObject
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> timestamp [
+EREventPacket >> timestamp [
 	^ self at: #timestamp
 ]
 
 { #category : #accessing }
-EREventAnnouncement >> timestamp: anObject [
+EREventPacket >> timestamp: anObject [
 	self at: #timestamp put: anObject
 ]
 
 { #category : #'accessing - unpacking' }
-EREventAnnouncement >> unpackedData [
+EREventPacket >> unpackedData [
 	^ self data ifNotNil: [ :aData | 
 		(self class environment at: self serializedBy) new
 			migrations: self migrationRules;

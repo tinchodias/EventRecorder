@@ -74,17 +74,6 @@ EREventCollectorTest >> testPrintOn [
 ]
 
 { #category : #tests }
-EREventCollectorTest >> testUpdateAnnouncement [
-	| announcement |
-	collector updateAnnouncementBlock:
-		[ :anAnnouncement | anAnnouncement at: #testUpdateAnnouncement put: 42 ].
-	announcement := EREventAnnouncement new.
-	self assert: (announcement at: #testUpdateAnnouncement) isNil.
-	collector updateAnnouncement: announcement.
-	self assert: (announcement at: #testUpdateAnnouncement) equals: 42
-]
-
-{ #category : #tests }
 EREventCollectorTest >> testUrl [
 	self assert: collector url notNil.
 	self assert: collector url equals: EREventRecorderSettings url.

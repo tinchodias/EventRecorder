@@ -25,9 +25,9 @@ EREventUnpackingTest >> setUp [
 
 { #category : #tests }
 EREventUnpackingTest >> testUnpack [
-	bundle := EREventPacking default pack: collector.
+	bundle := collector asBundleWith: EREventPacking default.
 	unpackedData := unpacking unpack: bundle data.
-	self assert: unpackedData class equals: EREventAnnouncement.
+	self assert: unpackedData class equals: EREventPacket.
 	self assert: unpackedData unpackedData asArray equals: initialData.
 ]
 
@@ -38,14 +38,14 @@ EREventUnpackingTest >> testUnpack2 [
 
 { #category : #tests }
 EREventUnpackingTest >> testUnpack3 [
-	bundle := EREventPacking default pack: collector.
+	bundle := collector asBundleWith: EREventPacking default.
 	unpacking := EREventUnpacking new.
 	self should: [ unpacking unpack: bundle data ] raise: EREventInitializationError
 ]
 
 { #category : #tests }
 EREventUnpackingTest >> testUnpack4 [
-	bundle := EREventPacking ston pack: collector.
+	bundle := collector asBundleWith: EREventPacking ston.
 	unpacking := EREventUnpacking new.
 	unpacking addPacking: EREventPacking fuel.
 	self should: [ unpacking unpack: bundle data ] raise: EREventUnpackingError 
@@ -53,7 +53,7 @@ EREventUnpackingTest >> testUnpack4 [
 
 { #category : #tests }
 EREventUnpackingTest >> testUnpack5 [
-	bundle := EREventPacking fuel pack: collector.
+	bundle := collector asBundleWith: EREventPacking fuel.
 	unpacking := EREventUnpacking new.
 	unpacking addPacking: EREventPacking ston.
 	self should: [ unpacking unpack: bundle data ] raise: EREventUnpackingError 
@@ -61,16 +61,16 @@ EREventUnpackingTest >> testUnpack5 [
 
 { #category : #tests }
 EREventUnpackingTest >> testUnpackFuel [
-	bundle := EREventPacking fuel pack: collector.
+	bundle := collector asBundleWith: EREventPacking fuel.
 	unpackedData := unpacking unpack: bundle data.
-	self assert: unpackedData class equals: EREventAnnouncement.
+	self assert: unpackedData class equals: EREventPacket.
 	self assert: unpackedData unpackedData asArray equals: initialData.
 ]
 
 { #category : #tests }
 EREventUnpackingTest >> testUnpackSton [
-	bundle := EREventPacking ston pack: collector.
+	bundle := collector asBundleWith: EREventPacking ston.
 	unpackedData := unpacking unpack: bundle data.
-	self assert: unpackedData class equals: EREventAnnouncement.
+	self assert: unpackedData class equals: EREventPacket.
 	self assert: unpackedData unpackedData asArray equals: initialData.
 ]

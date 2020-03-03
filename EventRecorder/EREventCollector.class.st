@@ -46,24 +46,11 @@ Class {
 		'url',
 		'category',
 		'recordedEvents',
-		'updateAnnouncementBlock',
-		'ownerWeakValueHolder'
+		'occupantWeakValueHolder',
+		'recorder'
 	],
 	#category : #'EventRecorder-Core'
 }
-
-{ #category : #examples }
-EREventCollector class >> registeredCollector [
-	<sampleInstance>
-
-	^ self new
-		category: #testingForFun; "the data are stored under the defined category."
-		occupant: nil; "object that represents your application, if nil, the collector will be removed from EREventRecorder object once collected data are sent"
-		add: 42; "collected data"
-		add: 'Hallo Pharo user'; "collected data"
-		register; "please, be aware that we collect the data"
-		yourself.
-]
 
 { #category : #adding }
 EREventCollector >> add: anEvent [
@@ -76,9 +63,35 @@ EREventCollector >> add: anEvent [
 EREventCollector >> addIfAvailable: anEvent [
 	"It add event to a queue only if sending diagnostic and usage data is enabled."
 
-	ERPharoUsageDataPrivacy sendDiagnosticsAndUsageData
+	recorder hasPermissionToSend
 		ifFalse: [ ^ anEvent ].
 	self add: anEvent
+]
+
+{ #category : #conversion }
+EREventCollector >> asBundleWith: anEREventPacking [
+	^ EREventSingleBundle new
+		url: self url;
+		category: self category;
+		data: (anEREventPacking serialize: (self asPacketWith: anEREventPacking));
+		yourself
+]
+
+{ #category : #conversion }
+EREventCollector >> asPacketWith: anERStonPacking [ 
+	^ EREventPacket new
+		data: (anERStonPacking serialize: self flushedEvents);
+		category: self category;
+		serializedBy: anERStonPacking class name;
+		eventRecorderVersion: anERStonPacking version;
+		timestamp: DateAndTime now;
+		imageHash: SmalltalkImage current imagePath hash;
+		imageVersion: SystemVersion current version;
+		latestUpdate: SystemVersion current commitHash;
+		computerUUID: GlobalIdentifier uniqueInstance computerUUID asString;
+		sessionUUID: SmalltalkImage current session id asString;
+		sessionCreationTime: SmalltalkImage current session creationTime;
+		yourself
 ]
 
 { #category : #accessing }
@@ -146,7 +159,8 @@ EREventCollector >> isLiberated [
 { #category : #actions }
 EREventCollector >> liberate [
 	"Liberate me from the occupant so I can be removed from EREventRecorder object in the next delivery cycle."
-	^ self occupantWeakValueHolder liberate.
+
+	^ self occupantWeakValueHolder liberate
 ]
 
 { #category : #accessing }
@@ -160,7 +174,7 @@ EREventCollector >> occupant: anObject [
 EREventCollector >> occupantWeakValueHolder [
 	"I answer a weak holder of my owner. Once it is nil, I can be removed from EREventRecorder object."
 
-	^ ownerWeakValueHolder ifNil: [ ownerWeakValueHolder := ERWeakValueHolder new ]
+	^ occupantWeakValueHolder ifNil: [ occupantWeakValueHolder := ERWeakValueHolder new ]
 ]
 
 { #category : #printing }
@@ -175,11 +189,9 @@ EREventCollector >> printOn: aStream [
 		nextPut: $]
 ]
 
-{ #category : #initialization }
-EREventCollector >> register [
-	"Register to the global EREventRecorder."
-
-	EREventRecorder uniqueInstance addCollector: self
+{ #category : #accessing }
+EREventCollector >> recorder: anEREventRecorder [ 
+	recorder := anEREventRecorder
 ]
 
 { #category : #accessing }
@@ -187,17 +199,6 @@ EREventCollector >> size [
 	"It returns number of collected events."
 
 	^ recordedEvents size
-]
-
-{ #category : #updating }
-EREventCollector >> updateAnnouncement: aEREventAnnouncement [
-	updateAnnouncementBlock
-		ifNotNil: [ updateAnnouncementBlock cull: aEREventAnnouncement ]
-]
-
-{ #category : #updating }
-EREventCollector >> updateAnnouncementBlock: aBlockClosure [ 
-	updateAnnouncementBlock := aBlockClosure
 ]
 
 { #category : #accessing }

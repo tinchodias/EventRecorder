@@ -194,7 +194,7 @@ EREventRecorderDelegateTest >> testHandlePutOfEventRecorder [
 	semaphore := Semaphore new.
 	server when: ZnConnectionAcceptedEvent do: [ :announcement | semaphore signal ].
 	server when: ZnServerConnectionClosedEvent do: [ :announcement | semaphore signal ].
-	recorder := EREventRecorder new.
+	recorder := EREventRecorder newWith: TestPrivacySettings new.
 	recorder deliveryPreSuspendingAction: [ recorder deliveryPreSuspendingAction: []. semaphore signal ].
 	recorder enablePermissionToSend.
 	collector := EREventCollector new.
@@ -212,7 +212,7 @@ EREventRecorderDelegateTest >> testHandlePutOfEventRecorder [
 	files := (fileSystem workingDirectory / 'files' / 'testingCategory') allFiles.
 	self assert: files size equals: 1.
 	contents := EREventUnpacking default unpackFile: files first.
-	self assert: (contents isKindOf: EREventAnnouncement).
+	self assert: (contents isKindOf: EREventPacket).
 	unpackedData := contents unpackedData.
 	self assert: unpackedData isCollection.
 	self assert: unpackedData size equals: 1.

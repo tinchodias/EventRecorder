@@ -6,17 +6,17 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'text',
-		'settingButton'
+		'settingButton',
+		'privacySettings'
 	],
 	#category : #'EventRecorder-PharoUsageData'
 }
 
 { #category : #specs }
 ERPharoUsageDataPrivacyAgreementPresenter class >> defaultSpec [
-
-	^  SpBoxLayout newVertical
-			add: #text;
-			add:
+	^ SpBoxLayout newVertical
+		add: #text;
+		add:
 			(SpBoxLayout newHorizontal
 				add: #settingButton;
 				yourself)
@@ -24,36 +24,24 @@ ERPharoUsageDataPrivacyAgreementPresenter class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #actions }
-ERPharoUsageDataPrivacyAgreementPresenter class >> openSettingsBrowser [
-	| settingsBrowser window node nodePath |
-	settingsBrowser := SettingBrowser new 
-		changePackageSet: (RPackage organizer packageNamed: 'EventRecorder') asOrderedCollection;
-		yourself.
-	window := settingsBrowser open.
-	window position: Display extent - window extent // 2.
-	settingsBrowser expandAll.
-	node := settingsBrowser treeHolder nodeNamed: #sendDiagnosticsAndUsageData.
-	nodePath := Array 
-		with: (settingsBrowser treeHolder nodeNamed: node parentName)
-		with: node.
-	settingsBrowser selection: (MorphTreeMorphSingleSelection new selectedNodePath: nodePath).
+{ #category : #specs }
+ERPharoUsageDataPrivacyAgreementPresenter class >> exampleOpen [
+	(self on: ERPharoUsageDataPrivacy) openWithSpec
 ]
 
 { #category : #testing }
 ERPharoUsageDataPrivacyAgreementPresenter >> hasPermissionToSend [
-	^ ERPharoUsageDataPrivacy hasPermissionToSend
+	^ privacySettings hasPermissionToSend
 ]
 
 { #category : #initialize }
 ERPharoUsageDataPrivacyAgreementPresenter >> initializePresenters [
-
 	text := self newText.
 	text text: self privacyMessage.
 	settingButton := self newButton.
 	settingButton
 		label: 'Go to setting ';
-		action: [ self openSettingsBrowser ].
+		action: [ self openSettingsBrowser ]
 ]
 
 { #category : #initialize }
@@ -69,9 +57,20 @@ ERPharoUsageDataPrivacyAgreementPresenter >> notSendingMessage [
 	^ 'No diagnostic and usage data is being sent. Would you like to send diagnostic and usage data to help us improve Pharo?'
 ]
 
-{ #category : #private }
+{ #category : #actions }
 ERPharoUsageDataPrivacyAgreementPresenter >> openSettingsBrowser [
-	self class openSettingsBrowser
+	| settingsBrowser window node nodePath |
+	settingsBrowser := SettingBrowser new 
+		changePackageSet: (RPackage organizer packageNamed: 'EventRecorder') asOrderedCollection;
+		yourself.
+	window := settingsBrowser open.
+	window position: Display extent - window extent // 2.
+	settingsBrowser expandAll.
+	node := settingsBrowser treeHolder nodeNamed: #sendDiagnosticsAndUsageData.
+	nodePath := Array 
+		with: (settingsBrowser treeHolder nodeNamed: node parentName)
+		with: node.
+	settingsBrowser selection: (MorphTreeMorphSingleSelection new selectedNodePath: nodePath).
 ]
 
 { #category : #accessing }
@@ -83,6 +82,10 @@ ERPharoUsageDataPrivacyAgreementPresenter >> privacyMessage [
 
 { #category : #accessing }
 ERPharoUsageDataPrivacyAgreementPresenter >> sendingMessage [
+	^ 'You are sending diagnostic and usage data to help us improve Pharo. Thanks!'
+]
 
-	^ 'You are sending diagnostic and usage data to help us improve Pharo. Thanks!' 
+{ #category : #'accessing model' }
+ERPharoUsageDataPrivacyAgreementPresenter >> setModelBeforeInitialization: aPrivacySettings [
+	privacySettings := aPrivacySettings
 ]

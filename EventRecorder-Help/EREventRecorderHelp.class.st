@@ -50,7 +50,7 @@ EREventRecorderHelp class >> analysis [
 		/201612/  - data collected during Dicember 2016
 		/201701/  - data collected during January 2017
 
-	Each file is a serialized {EREventAnnouncement} object. The object is a data container of meta data and of collected events.
+	Each file is a serialized {EREventPacket} object. The object is a data container of meta data and of collected events.
 
 !! Analysis
 	
@@ -63,7 +63,7 @@ EREventRecorderHelp class >> analysis [
 	Remember that semantics of the data depends on you. Event Recorder only provides a convenient infrustructure to collect data.' 
 		format: {
 			'EREventTool' -> EREventTool.
-			'EREventAnnouncement' -> EREventAnnouncement.
+			'EREventPacket' -> EREventPacket.
 			'url' -> EREventTool defaultBaseUrl 
 		} asDictionary)
 ]
@@ -82,7 +82,7 @@ EREventRecorderHelp class >> bookName [
 EREventRecorderHelp class >> client [
 	^ HelpTopic 
 		title: 'Client'
-		contents:	 ('	The client includes four main objects: {EREventRecorder}, {EREventCollector}, {EREventAnnouncement}, and {EREventTool}. The last one is described in the Data Analysis section.
+		contents:	 ('	The client includes four main objects: {EREventRecorder}, {EREventCollector}, {EREventPacket}, and {EREventTool}. The last one is described in the Data Analysis section.
 
 !! {EREventRecorder}
 
@@ -106,7 +106,7 @@ EREventRecorderHelp class >> client [
 
 	You can collect any data that is possible to serialize by the recorder''s packing. By default, it uses STON for data serialization, but a Fuel alternative is available, too. (Check at `{EREventPacking} default`).
 	
-	Before the data are sent to the server, it is serialized and kept by an {EREventAnnouncement} object who also keeps additional information, e.g., computer-id, data and time. The additional information helps you to group collected data per computer and order them according to time. For that reason, we recommend you to collect objects that responds to #infoAt:put:. If so, the additional information is passed to your extracted data.  {ERBasicRecorderEvent} class represents a basic example that we recommend to use, e.g., subclass it. 
+	Before the data are sent to the server, it is serialized and kept by an {EREventPacket} object who also keeps additional information, e.g., computer-id, data and time. The additional information helps you to group collected data per computer and order them according to time. For that reason, we recommend you to collect objects that responds to #infoAt:put:. If so, the additional information is passed to your extracted data. 
 
 	For more information, read the class comment of {EREventCollector}.'
 	format: {
@@ -114,8 +114,7 @@ EREventRecorderHelp class >> client [
 		'EREventCollector' -> EREventCollector.
 		'EREventTool' -> EREventTool.
 		'EREventPacking' -> EREventPacking.
-		'EREventAnnouncement' -> EREventAnnouncement.
-		'ERBasicRecorderEvent' -> ERBasicRecorderEvent.
+		'EREventPacket' -> EREventPacket.
 		} asDictionary)
 ]
 

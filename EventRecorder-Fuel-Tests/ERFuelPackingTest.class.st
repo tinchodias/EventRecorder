@@ -16,9 +16,9 @@ ERFuelPackingTest >> testMigration [
 	oldObject := oldClass new.
 	collector := EREventCollector new.
 	collector add: oldObject.
-	bundle := packing pack: collector.
-	announcement := packing unpack: bundle data.
-	self should: [ announcement unpackedData ] raise: FLClassNotFound.
+	bundle := collector asBundleWith: packing.
+	packet := packing unpack: bundle data.
+	self should: [ packet unpackedData ] raise: FLClassNotFound.
 ]
 
 { #category : #tests }
@@ -28,12 +28,12 @@ ERFuelPackingTest >> testMigration2 [
 	oldObject := oldClass new.
 	collector := EREventCollector new.
 	collector add: oldObject.
-	bundle := packing pack: collector.
+	bundle := collector asBundleWith: packing.
 	packing addMigration: [ :aMaterializer |
 		aMaterializer migrateClassNamed: oldClass name asSymbol toClass: ERDummyEvent ].
-	announcement := packing unpack: bundle data.
-	announcement migrationRules: packing migrations.
-	unpackedData := announcement unpackedData.
+	packet := packing unpack: bundle data.
+	packet migrationRules: packing migrations.
+	unpackedData := packet unpackedData.
 	self assert: unpackedData isCollection.
 	self assert: unpackedData size equals: 1.
 	self assert: unpackedData anyOne class equals: ERDummyEvent.

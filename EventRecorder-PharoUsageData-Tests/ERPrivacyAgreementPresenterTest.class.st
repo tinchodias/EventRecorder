@@ -7,21 +7,20 @@ Class {
 { #category : #tests }
 ERPrivacyAgreementPresenterTest >> testMessage [
 
-	| previousSetting |
-	[ | presenter |
-	previousSetting := ERPharoUsageDataPrivacy sendDiagnosticsAndUsageData.
-	presenter := ERPharoUsageDataPrivacyAgreementPresenter new.
-	ERPharoUsageDataPrivacy sendDiagnosticsAndUsageData: true.
+	| presenter privacy |
+	privacy := TestPrivacySettings new.
+	presenter := ERPharoUsageDataPrivacyAgreementPresenter on: privacy.
+	privacy enablePermissionToSend.
 	self assert: presenter privacyMessage equals: presenter sendingMessage.
-	ERPharoUsageDataPrivacy sendDiagnosticsAndUsageData: false.
-	self assert: presenter privacyMessage equals: presenter notSendingMessage ]
-		ensure: [ ERPharoUsageDataPrivacy sendDiagnosticsAndUsageData: previousSetting ]
+	privacy disablePermissionToSend.
+	self assert: presenter privacyMessage equals: presenter notSendingMessage
+
 ]
 
 { #category : #tests }
 ERPrivacyAgreementPresenterTest >> testOpenWindowAddsItToWindowCollection [
-
 	| presenter |
-	self shouldnt: [ presenter := ERPharoUsageDataPrivacyAgreementPresenter new openWithSpec ] raise: MessageNotUnderstood.
+	presenter := (ERPharoUsageDataPrivacyAgreementPresenter
+		on: TestPrivacySettings new) openWithSpec.
 	presenter close
 ]

@@ -10,10 +10,10 @@ Class {
 		'event2',
 		'collector',
 		'bundle',
-		'announcement',
 		'unpackedData',
 		'storage',
-		'file'
+		'file',
+		'packet'
 	],
 	#category : #'EventRecorder-Tests-Support'
 }
@@ -25,7 +25,7 @@ EREventPackingTest class >> isAbstract [
 
 { #category : #asserting }
 EREventPackingTest >> assertBundle [
-	bundle := packing pack: collector.
+	bundle := collector asBundleWith: packing.
 	self assert: bundle url equals: collector url.
 	self assert: bundle data isLiteral.
 	self assert: bundle category equals: collector category.
@@ -33,7 +33,7 @@ EREventPackingTest >> assertBundle [
 
 { #category : #asserting }
 EREventPackingTest >> assertUnpackedData [
-	unpackedData := announcement unpackedData.
+	unpackedData := packet unpackedData.
 	self assert: unpackedData size equals: 2.
 	self assert: unpackedData first equals: event1.
 	self assert: unpackedData second equals: event2
@@ -59,27 +59,17 @@ EREventPackingTest >> setUp [
 ]
 
 { #category : #'tests-packing' }
-EREventPackingTest >> testNewAnnouncementFor [
-	announcement := packing newAnnouncementFor: collector.
-	self assert: announcement serializedBy equals: packing class name.
-	self assert: announcement eventRecorderVersion equals: packing version.
-	self assert: announcement category equals: collector category.
-]
-
-{ #category : #'tests-packing' }
-EREventPackingTest >> testNewAnnouncementFor2 [
-	collector updateAnnouncementBlock: [ :anAnnouncement | 
-		anAnnouncement at: #testNewAnnouncementFor2 put: 42 ].
-	announcement := packing newAnnouncementFor: collector.
-	self assert: announcement serializedBy equals: packing class name.
-	self assert: announcement eventRecorderVersion equals: packing version.
-	self assert: (announcement at: #testNewAnnouncementFor2) equals: 42.
+EREventPackingTest >> testCreatePacket [
+	packet := collector asPacketWith: packing.
+	self assert: packet serializedBy equals: packing class name.
+	self assert: packet eventRecorderVersion equals: packing version.
+	self assert: packet category equals: collector category.
 ]
 
 { #category : #'tests-packing' }
 EREventPackingTest >> testPack [
 	self assertBundle.
-	announcement := packing unpack: bundle data.
+	packet := packing unpack: bundle data.
 	self assertUnpackedData
 ]
 
@@ -89,7 +79,7 @@ EREventPackingTest >> testUnpackBinaryBinaryStream [
 	file binaryWriteStreamDo: [ :aStream | 
 		aStream nextPutAll: bundle data ].
 	file binaryReadStreamDo: [ :aStream | 
-		announcement := packing unpack: aStream contents ].
+		packet := packing unpack: aStream contents ].
 	self assertUnpackedData.
 
 ]

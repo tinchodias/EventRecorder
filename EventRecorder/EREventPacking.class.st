@@ -39,29 +39,6 @@ EREventPacking >> migrations: anObject [
 ]
 
 { #category : #private }
-EREventPacking >> newAnnouncementFor: aEREventCollector [
-	| announcement |
-	announcement := EREventAnnouncement new.
-	self update: announcement withCollector: aEREventCollector.
-	aEREventCollector updateAnnouncement: announcement.
-	^ announcement
-]
-
-{ #category : #packing }
-EREventPacking >> pack: aEREventCollector [
-	^ EREventSingleBundle new
-			url: aEREventCollector url;
-			category: aEREventCollector category;
-			data: (self packCollector: aEREventCollector);
-			yourself
-]
-
-{ #category : #private }
-EREventPacking >> packCollector: aEREventCollector [
-	^ self serialize: (self newAnnouncementFor: aEREventCollector)
-]
-
-{ #category : #private }
 EREventPacking >> serialize: anObject [
 	^ self subclassResponsibility
 ]
@@ -75,22 +52,6 @@ EREventPacking >> technologyName [
 { #category : #packing }
 EREventPacking >> unpack: aByteArray [
 	^ self materialize: aByteArray
-]
-
-{ #category : #private }
-EREventPacking >> update: aEREventAnnouncement withCollector: aEREventCollector [
-	aEREventAnnouncement
-		data: (self serialize: aEREventCollector flushedEvents);
-		category: aEREventCollector category;
-		serializedBy: self class name;
-		eventRecorderVersion: self version;
-		timestamp: DateAndTime now;
-		imageHash: SmalltalkImage current imagePath hash;
-		imageVersion: SystemVersion current version;
-		latestUpdate: SystemVersion current commitHash;
-		computerUUID: GlobalIdentifier uniqueInstance computerUUID asString;
-		sessionUUID: SmalltalkImage current session id asString;
-		sessionCreationTime: SmalltalkImage current session creationTime.
 ]
 
 { #category : #accessing }
